@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Domain.Interfaces.Repositories;
+﻿using CleanArchitecture.Application.Common.Interfaces.Repositories;
 using CleanArchitecture.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using System;

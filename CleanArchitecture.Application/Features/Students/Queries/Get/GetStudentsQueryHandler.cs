@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
 using CleanArchitecture.Application.Common.Helpers;
+using CleanArchitecture.Application.Common.Interfaces.Repositories;
 using CleanArchitecture.Application.Common.Localization;
 using CleanArchitecture.Application.Common.Responses;
 using CleanArchitecture.Application.Features.Students.DTOs;
 using CleanArchitecture.Domain.Entities;
-using CleanArchitecture.Domain.Interfaces;
-using CleanArchitecture.Domain.Interfaces.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;

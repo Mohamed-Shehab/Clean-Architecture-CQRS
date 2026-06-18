@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArchitecture.Domain.Interfaces
+namespace CleanArchitecture.Application.Common.Interfaces
 {
     public interface IUnitOfWork
     {

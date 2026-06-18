@@ -1,8 +1,8 @@
-﻿using CleanArchitecture.Application.Common.Localization;
+﻿using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Interfaces.Repositories;
+using CleanArchitecture.Application.Common.Localization;
 using CleanArchitecture.Application.Common.Localization.Resources;
 using CleanArchitecture.Application.Common.Responses;
-using CleanArchitecture.Domain.Interfaces;
-using CleanArchitecture.Domain.Interfaces.Repositories;
 using MediatR;
 using Microsoft.Extensions.Localization;
 using System;

@@ -1,8 +1,8 @@
-﻿using CleanArchitecture.Application.Common.Localization;
+﻿using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Interfaces.Repositories;
+using CleanArchitecture.Application.Common.Localization;
 using CleanArchitecture.Application.Common.Localization.Resources;
 using CleanArchitecture.Application.Common.Responses;
-using CleanArchitecture.Domain.Interfaces;
-using CleanArchitecture.Infrastructure.Persistence.Context;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
@@ -16,15 +16,21 @@ namespace CleanArchitecture.Application.Features.Courses.Commands.Unregister
 {
     public sealed class RemoveStudentFromCourseCommandHandler : IRequestHandler<RemoveStudentFromCourseCommand, Response<object>>
     {
-        private readonly AppDbContext _context;
+        private readonly ICourseRepository _courseRepository;
+        private readonly IStudentRepository _studentRepository;
+        private readonly IStudentCourseRepository _studentCourseRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IStringLocalizer<SharedResources> _localizer;
 
-        public RemoveStudentFromCourseCommandHandler(AppDbContext context,
+        public RemoveStudentFromCourseCommandHandler(ICourseRepository courseRepository,
+                                                     IStudentRepository studentRepository,
+                                                     IStudentCourseRepository studentCourseRepository,
                                                      IUnitOfWork unitOfWork,
                                                      IStringLocalizer<SharedResources> localizer)
         {
-            this._context = context;
+            this._courseRepository = courseRepository;
+            this._studentRepository = studentRepository;
+            this._studentCourseRepository = studentCourseRepository;
             this._unitOfWork = unitOfWork;
             this._localizer = localizer;
         }
@@ -32,7 +38,7 @@ namespace CleanArchitecture.Application.Features.Courses.Commands.Unregister
         public async Task<Response<object>> Handle(RemoveStudentFromCourseCommand request, CancellationToken cancellationToken)
         {
             // Check Is Course Exists
-            var courseExists = await _context.Courses
+            var courseExists = await _courseRepository
                 .AnyAsync(c => c.Id == request.CourseId, cancellationToken);
 
             if (!courseExists)
@@ -40,7 +46,7 @@ namespace CleanArchitecture.Application.Features.Courses.Commands.Unregister
 
 
             // Check Is Student Exists
-            var studentExists = await _context.Students
+            var studentExists = await _studentRepository
                 .AnyAsync(s => s.Id == request.StudentId, cancellationToken);
 
             if(!studentExists)
@@ -48,16 +54,15 @@ namespace CleanArchitecture.Application.Features.Courses.Commands.Unregister
 
 
             // Check Is Student Assigned To Course
-            var studentAssigned = await _context.StudentCourses
-                .FirstOrDefaultAsync(sc => sc.CourseId == request.CourseId
-                                                && sc.StudentId == request.StudentId, cancellationToken);
+            var assignment = await _studentCourseRepository.GetAssignmentAsync(request.StudentId, request.CourseId, cancellationToken);
+                
 
-            if (studentAssigned == null)
+            if (assignment == null)
                 return ResponseHandler.BadRequest<object>(_localizer[Errors.StudentNotAssigned]);
 
 
             // UnAssigned Course
-            _context.StudentCourses.Remove(studentAssigned);
+            _studentCourseRepository.Delete(assignment);
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 

@@ -1,10 +1,10 @@
 ﻿using CleanArchitecture.Application.Common.Helpers;
+using CleanArchitecture.Application.Common.Interfaces.Repositories;
 using CleanArchitecture.Application.Common.Localization;
 using CleanArchitecture.Application.Common.Localization.Resources;
 using CleanArchitecture.Application.Common.Responses;
 using CleanArchitecture.Application.Features.Students.DTOs;
 using CleanArchitecture.Domain.Entities;
-using CleanArchitecture.Infrastructure.Persistence.Context;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
@@ -20,19 +20,19 @@ namespace CleanArchitecture.Application.Features.Students.Queries.GetCourses
     public sealed class GetCoursesByStudentIdQueryHandler
         : IRequestHandler<GetCoursesByStudentIdQuery, Response<List<StudentCourseDto>>>
     {
-        private readonly AppDbContext _context;
+        private readonly IStudentRepository _studentRepository;
         private readonly IStringLocalizer<SharedResources> _localizer;
 
-        public GetCoursesByStudentIdQueryHandler(AppDbContext context, IStringLocalizer<SharedResources> localizer)
+        public GetCoursesByStudentIdQueryHandler(IStudentRepository studentRepository, IStringLocalizer<SharedResources> localizer)
         {
-            this._context = context;
+            this._studentRepository = studentRepository;
             this._localizer = localizer;
         }
 
         public async Task<Response<List<StudentCourseDto>>> Handle(GetCoursesByStudentIdQuery request, CancellationToken cancellationToken)
         {
             // Check Is Student Exists
-            var studentExists = await _context.Students
+            var studentExists = await _studentRepository
                 .AnyAsync(s => s.Id == request.StudentId, cancellationToken);
 
             if (!studentExists)
@@ -42,46 +42,19 @@ namespace CleanArchitecture.Application.Features.Students.Queries.GetCourses
             // Normalize Pagination
             request.Pagination.Normalize();
 
+            var property = GetSortingProperty(request);
 
-            // Base Query
-            var query = _context.StudentCourses.AsNoTracking()
-                .Where(sc => sc.StudentId == request.StudentId);
+            var (courses, totalCount) = await _studentRepository
+                .GetCoursesAsync(request.StudentId,
+                                 request.Filter?.Search,
+                                 property,
+                                 request.Sorting.IsDescending,
+                                 request.Pagination.PageNumber,
+                                 request.Pagination.PageSize,
+                                 cancellationToken);
 
-            // Total Count
-            var totalCount = await query.CountAsync(cancellationToken);
-
-            if (totalCount == 0)
+            if(totalCount == 0)
                 return ResponseHandler.NotFound<List<StudentCourseDto>>(_localizer[Messages.NoCoursesForStudent]);
-
-
-            // Filter
-            if (!string.IsNullOrWhiteSpace(request.Filter?.Search))
-            {
-                var search = request.Filter.Search.Trim();
-                query = query.Where(sc => sc.Course.Title.Contains(search));
-            }
-
-            // Sorting
-            if (request.Sorting != null)
-            {
-                query = request.Sorting.IsDescending
-                    ? query.OrderByDescending(GetSortingProperty(request))
-                    : query.OrderBy(GetSortingProperty(request));
-            }
-
-
-            // Pagination + Projection
-            var courses = await query
-                .Skip((request.Pagination.PageNumber - 1) * request.Pagination.PageSize)
-                .Take(request.Pagination.PageSize)
-                .Select(sc => new StudentCourseDto
-                {
-                    CourseId = sc.CourseId,
-                    Title = sc.Course.Title,
-                    EnrolledAt = sc.EnrolledAt
-                })
-                .ToListAsync(cancellationToken);
-
 
             return ResponseHandler.SuccessPaged(
                 courses,

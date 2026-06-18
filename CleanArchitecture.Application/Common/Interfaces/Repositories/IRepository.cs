@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArchitecture.Domain.Interfaces.Repositories
+namespace CleanArchitecture.Application.Common.Interfaces.Repositories
 {
     public interface IRepository<T> where T : class
     {

@@ -1,6 +1,6 @@
-﻿using CleanArchitecture.Application.Common.Responses;
+﻿using CleanArchitecture.Application.Common.Interfaces.Repositories;
+using CleanArchitecture.Application.Common.Responses;
 using CleanArchitecture.Application.Features.Courses.DTOs;
-using CleanArchitecture.Infrastructure.Persistence.Context;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -13,23 +13,15 @@ namespace CleanArchitecture.Application.Features.Courses.Queries.GetById
 {
     public class GetCourseByIdQueryHandler : IRequestHandler<GetCourseByIdQuery, Response<CourseDetailsDto>>
     {
-        private readonly AppDbContext _context;
-        public GetCourseByIdQueryHandler(AppDbContext context)
+        private readonly ICourseRepository _courseRepository;
+        public GetCourseByIdQueryHandler(ICourseRepository courseRepository)
         {
-            this._context = context;
+            this._courseRepository = courseRepository;
         }
 
         public async Task<Response<CourseDetailsDto>> Handle(GetCourseByIdQuery request, CancellationToken cancellationToken)
         {
-            var course = await _context.Courses
-                .Where(c => c.Id == request.Id)
-                .Select(c => new CourseDetailsDto
-                {
-                    Id = c.Id,
-                    Name = c.Title,
-                    CourseCapacity = c.MaxStudents
-                })
-                .FirstOrDefaultAsync(cancellationToken);
+            var course = await _courseRepository.GetCourseDetailsAsync(request.Id, cancellationToken);
 
             if (course == null)
                 return ResponseHandler.NotFound<CourseDetailsDto>();

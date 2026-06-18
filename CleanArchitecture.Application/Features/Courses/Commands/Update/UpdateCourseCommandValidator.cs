@@ -1,6 +1,6 @@
-﻿using CleanArchitecture.Application.Common.Localization;
+﻿using CleanArchitecture.Application.Common.Interfaces.Repositories;
+using CleanArchitecture.Application.Common.Localization;
 using CleanArchitecture.Application.Common.Localization.Resources;
-using CleanArchitecture.Domain.Interfaces.Repositories;
 using FluentValidation;
 using Microsoft.Extensions.Localization;
 using System;

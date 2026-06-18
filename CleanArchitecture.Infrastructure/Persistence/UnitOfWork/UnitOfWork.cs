@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Domain.Interfaces;
+﻿using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Infrastructure.Persistence.Context;
 using System;
 using System.Collections.Generic;

@@ -1,5 +1,5 @@
-﻿using CleanArchitecture.Domain.Interfaces;
-using CleanArchitecture.Domain.Interfaces.Repositories;
+﻿using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Interfaces.Repositories;
 using CleanArchitecture.Infrastructure.Persistence.Context;
 using CleanArchitecture.Infrastructure.Persistence.Repositories;
 using CleanArchitecture.Infrastructure.Persistence.UnitOfWork;
@@ -23,6 +23,7 @@ namespace CleanArchitecture.Infrastructure
             // Registrarion of Repositories
             services.AddScoped<IStudentRepository, StudentRepository>();
             services.AddScoped<ICourseRepository, CourseRepository>();
+            services.AddScoped<IStudentCourseRepository, StudentCourseRepository>();
 
             // Registration of Unit Of Work
             services.AddScoped<IUnitOfWork, UnitOfWork>();
