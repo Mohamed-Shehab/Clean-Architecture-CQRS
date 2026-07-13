@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CleanArchitecture.Application.Common.Localization
+﻿namespace CleanArchitecture.Application.Common.Localization
 {
     public static class Entities
     {
+        public const string User = "User";
         public const string Student = "Student";
+        public const string Students = "Students";
         public const string Course = "Course";
+        public const string Courses = "Courses";
     }
 }

@@ -1,55 +1,75 @@
-﻿using CleanArchitecture.Application.Common.Interfaces.Repositories;
-using CleanArchitecture.Application.Common.Localization;
+﻿using CleanArchitecture.Application.Common.Localization;
 using CleanArchitecture.Application.Common.Localization.Resources;
 using FluentValidation;
 using Microsoft.Extensions.Localization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CleanArchitecture.Application.Features.Courses.Commands.Update
 {
     public class UpdateCourseCommandValidator : AbstractValidator<UpdateCourseCommand>
     {
-        private readonly ICourseRepository _courseRepository;
         private readonly IStringLocalizer<SharedResources> _localizer;
 
-        public UpdateCourseCommandValidator(ICourseRepository courseRepository, IStringLocalizer<SharedResources> localizer)
+        public UpdateCourseCommandValidator(IStringLocalizer<SharedResources> localizer)
         {
-            this._courseRepository = courseRepository;
             this._localizer = localizer;
 
-            ValidateTitle();
-            ValidateMaxStudents();
+            ValidateId();
+            ValidateNameEn();
+            ValidateNameAr();
+            ValidateDescription();
+            ValidateCapacity();
         }
 
-        private void ValidateTitle()
+        private void ValidateId()
         {
-            RuleFor(x => x.Title)
-                .NotEmpty().WithMessage(_localizer[ValidationErrors.Required, _localizer[Fields.Title]]);
-
-
-            RuleFor(x => x.Title)
-                .MinimumLength(2).WithMessage(_localizer[ValidationErrors.MinLength, _localizer[Fields.Title], 2])
-                .MaximumLength(100).WithMessage(_localizer[ValidationErrors.MaxLength, _localizer[Fields.Title], 100])
-                .When(x => !string.IsNullOrEmpty(x.Title));
-
-            RuleFor(x => x.Title)
-                .MustAsync(BeUniqueTitle).WithMessage(_localizer[ValidationErrors.AlreadyExists, _localizer[Fields.Title]]);
+            RuleFor(x => x.Id)
+                .GreaterThan(0)
+                .WithMessage(_localizer[ValidationErrors.GreaterThan, _localizer[Fields.Id, _localizer[Entities.Course]], 0]);
         }
 
-        private void ValidateMaxStudents()
+        private void ValidateNameEn()
         {
-            RuleFor(x => x.MaxStudents)
-                .GreaterThanOrEqualTo(1).WithMessage(_localizer[ValidationErrors.MinValue, _localizer[Fields.MaxStudents], 1])
-                .LessThanOrEqualTo(1000).WithMessage(_localizer[ValidationErrors.MaxValue, _localizer[Fields.MaxStudents], 1000]);
+            RuleFor(x => x.NameEn)
+                .NotEmpty()
+                .WithMessage(_localizer[ValidationErrors.Required, _localizer[Fields.NameEn, _localizer[Entities.Course]]]);
+
+
+            RuleFor(x => x.NameEn)
+                .MinimumLength(2)
+                .WithMessage(_localizer[ValidationErrors.MinLength, _localizer[Fields.NameEn, _localizer[Entities.Course], 2]])
+                .MaximumLength(150)
+                .WithMessage(_localizer[ValidationErrors.MaxLength, _localizer[Fields.NameEn, _localizer[Entities.Course]], 150])
+                .When(x => !string.IsNullOrWhiteSpace(x.NameEn));
         }
 
-        private async Task<bool> BeUniqueTitle(UpdateCourseCommand command, string title, CancellationToken cancellationToken)
+        private void ValidateNameAr()
         {
-            return !await _courseRepository.AnyAsync(c => c.Title == title && c.Id != command.Id, cancellationToken);
+            RuleFor(x => x.NameAr)
+                .NotEmpty()
+                .WithMessage(_localizer[ValidationErrors.Required, _localizer[Fields.NameAr, _localizer[Entities.Course]]]);
+
+
+            RuleFor(x => x.NameAr)
+                .MinimumLength(2)
+                .WithMessage(_localizer[ValidationErrors.MinLength, _localizer[Fields.NameAr, _localizer[Entities.Course], 2]])
+                .MaximumLength(150)
+                .WithMessage(_localizer[ValidationErrors.MaxLength, _localizer[Fields.NameAr, _localizer[Entities.Course]], 150])
+                .When(x => !string.IsNullOrWhiteSpace(x.NameAr));
+        }
+
+        private void ValidateDescription()
+        {
+            RuleFor(x => x.Description)
+                .MaximumLength(1000)
+                .WithMessage(_localizer[ValidationErrors.MaxLength, _localizer[Fields.Description, _localizer[Entities.Course]], 1000])
+                .When(x => !string.IsNullOrWhiteSpace(x.Description));
+        }
+
+        private void ValidateCapacity()
+        {
+            RuleFor(x => x.Capacity)
+                .GreaterThan(0)
+                .WithMessage(_localizer[ValidationErrors.MinValue, _localizer[Fields.Capacity, _localizer[Entities.Course]], 1]);
         }
     }
 }

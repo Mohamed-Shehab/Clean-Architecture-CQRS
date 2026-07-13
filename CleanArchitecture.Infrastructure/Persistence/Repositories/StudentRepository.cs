@@ -1,17 +1,11 @@
-﻿using Azure.Core;
-using CleanArchitecture.Application.Common.Interfaces.Repositories;
-using CleanArchitecture.Application.Common.Localization;
-using CleanArchitecture.Application.Common.Responses;
-using CleanArchitecture.Application.Features.Students.DTOs;
+﻿using CleanArchitecture.Application.Common.Interfaces.Repositories;
+using CleanArchitecture.Application.Common.Models.Querying;
+using CleanArchitecture.Application.Features.Students.Queries.Get;
+using CleanArchitecture.Application.Features.Students.Queries.Get.Models;
+using CleanArchitecture.Application.Features.Students.Queries.GetById;
 using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CleanArchitecture.Infrastructure.Persistence.Repositories
 {
@@ -21,51 +15,119 @@ namespace CleanArchitecture.Infrastructure.Persistence.Repositories
         {
         }
 
-        public async Task<(List<StudentCourseDto> Data, int TotalCount)> GetCoursesAsync(int studentId, 
-                                                                                         string? search,
-                                                                                         Expression<Func<StudentCourse, object>> property, 
-                                                                                         bool descending, 
-                                                                                         int pageNumber, 
-                                                                                         int pageSize, 
-                                                                                         CancellationToken cancellationToken)
+
+        public async Task<(List<StudentDto> Data, int TotalCount)> GetStudentsAsync(StudentFilterModel? filter,
+                                                                                    StudentSortingModel? sorting,
+                                                                                    PaginationModel pagination,
+                                                                                    CancellationToken cancellationToken)
         {
-            // Base Query
-            var query = _context.StudentCourses.AsNoTracking()
-                .Where(sc => sc.StudentId == studentId);
+            var query = _context.Students
+                .Join(
+                    _context.Users,
+                    student => student.UserId,
+                    user => user.Id,
+                    (student, user) => new
+                    {
+                        StudentId = student.Id,
+                        FullName = user.FirstName + " " + user.LastName,
+                        user.Email,
+                        user.PhoneNumber,
+                        student.DateOfBirth
+                    });
+
+
+            // Filtering
+            if (filter != null)
+            {
+                if (!string.IsNullOrWhiteSpace(filter.FullName))
+                {
+                    var fullName = filter.FullName.Trim();
+
+                    query = query.Where(x =>
+                        x.FullName.Contains(fullName));
+                }
+
+                if (!string.IsNullOrWhiteSpace(filter.Email))
+                {
+                    var email = filter.Email.Trim();
+
+                    query = query.Where(x =>
+                        x.Email!.Contains(email));
+                }
+
+                if (!string.IsNullOrWhiteSpace(filter.PhoneNumber))
+                {
+                    var phoneNumber = filter.PhoneNumber.Trim();
+
+                    query = query.Where(x =>
+                        x.PhoneNumber!.Contains(phoneNumber));
+                }
+            }
+
+
+            // Sorting
+            var orderBy = sorting?.OrderBy ?? StudentOrderBy.Id;
+            var descending = sorting?.IsDescending ?? false;
+
+            query = orderBy switch
+            {
+                StudentOrderBy.FullName => descending
+                    ? query.OrderByDescending(x => x.FullName)
+                    : query.OrderBy(x => x.FullName),
+
+                StudentOrderBy.DateOfBirth => descending
+                    ? query.OrderByDescending(x => x.DateOfBirth)
+                    : query.OrderBy(x => x.DateOfBirth),
+
+                _ => descending
+                    ? query.OrderByDescending(x => x.StudentId)
+                    : query.OrderBy(x => x.StudentId)
+            };
+
 
             // Total Count
             var totalCount = await query.CountAsync(cancellationToken);
 
-            if (totalCount == 0)
-                return (new List<StudentCourseDto>(), 0);
-
-
-            // Filter
-            if (!string.IsNullOrWhiteSpace(search))
-            {
-                search = search.Trim();
-                query = query.Where(sc => sc.Course.Title.Contains(search));
-            }
-
-            // Sorting
-            query = descending
-                ? query.OrderByDescending(property)
-                : query.OrderBy(property);
-
 
             // Pagination + Projection
-            var courses = await query
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
-                .Select(sc => new StudentCourseDto
+            var students = await query
+                .Skip((pagination.PageNumber - 1) * pagination.PageSize)
+                .Take(pagination.PageSize)
+                .Select( x => new StudentDto
                 {
-                    CourseId = sc.CourseId,
-                    Title = sc.Course.Title,
-                    EnrolledAt = sc.EnrolledAt
+                    Id = x.StudentId,
+                    FullName = x.FullName,
+                    Email = x.Email!,
+                    PhoneNumber = x.PhoneNumber!
                 })
                 .ToListAsync(cancellationToken);
 
-            return (courses, totalCount);
+
+            return (students, totalCount);
         }
+
+
+        public async Task<StudentDetailsDto?> GetStudentDetailsAsync(int studentId,
+                                                                     CancellationToken cancellationToken)
+        {
+            return await _context.Students
+                .Where(s => s.Id == studentId)
+                .Join(
+                    _context.Users,
+                    student => student.UserId,
+                    user => user.Id,
+                    (student, user) => new StudentDetailsDto
+                    {
+                        Id = student.Id,
+                        FullName = user.FirstName + " " + user.LastName,
+                        Email = user.Email!,
+                        PhoneNumber = user.PhoneNumber!,
+                        DateOfBirth = student.DateOfBirth,
+                        Address = student.Address
+                    })
+                .FirstOrDefaultAsync(cancellationToken);
+        }
+
+
     }
 }

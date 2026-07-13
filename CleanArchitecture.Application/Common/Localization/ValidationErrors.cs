@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CleanArchitecture.Application.Common.Localization
+﻿namespace CleanArchitecture.Application.Common.Localization
 {
     public static class ValidationErrors
     {
@@ -16,7 +10,6 @@ namespace CleanArchitecture.Application.Common.Localization
         public const string MaxValue = "MaxValue";
         public const string GreaterThan = "GreaterThan";
         public const string InvalidEmail = "InvalidEmail";
-        public const string AlreadyUsed = "AlreadyUsed";
-        public const string AlreadyExists = "AlreadyExists";
+        public const string InvalidValue = "InvalidValue";
     }
 }

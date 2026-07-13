@@ -1,19 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CleanArchitecture.Application.Common.Localization
+﻿namespace CleanArchitecture.Application.Common.Localization
 {
-    public class Messages
+    public static class Messages
     {
         public const string CreatedSuccessfully = "CreatedSuccessfully";
         public const string UpdatedSuccessfully = "UpdatedSuccessfully";
         public const string DeletedSuccessfully = "DeletedSuccessfully";
+        public const string CreationFailed = "CreationFailed";
+        public const string UpdateFailed = "UpdateFailed";
+        public const string DeletionFailed = "DeletionFailed";
         public const string NotFound = "NotFound";
-        public const string StudentAssignedSuccessfully = "StudentAssignedSuccessfully";
-        public const string StudentRemovedSuccessfully = "StudentRemovedSuccessfully";
+        public const string RetrievedSuccessfully = "RetrievedSuccessfully";
+        public const string EnrolledSuccessfully = "EnrolledSuccessfully";
+        public const string UnenrolledSuccessfully = "UnenrolledSuccessfully";
+        public const string CompletedSuccessfully = "CompletedSuccessfully";
         public const string NoCoursesForStudent = "NoCoursesForStudent";
     }
 }

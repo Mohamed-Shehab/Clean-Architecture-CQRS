@@ -1,17 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CleanArchitecture.Application.Common.Localization
+﻿namespace CleanArchitecture.Application.Common.Localization
 {
     public static class Fields
     {
-        public const string Name = "Name";
+        public const string Id = "Id";
+        public const string FirstName = "FirstName";
+        public const string LastName = "LastName";
         public const string Email = "Email";
+        public const string PhoneNumber = "PhoneNumber";
         public const string Password = "Password";
-        public const string Title = "Title";
-        public const string MaxStudents = "MaxStudents";
+        public const string DateOfBirth = "DateOfBirth";
+        public const string Address = "Address";
+
+        public const string NameEn = "NameEn";
+        public const string NameAr = "NameAr";
+        public const string Description = "Description";
+        public const string Capacity = "Capacity";
     }
 }

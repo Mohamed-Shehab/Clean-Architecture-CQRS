@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CleanArchitecture.Application.Common.Models.Querying;
+using Microsoft.AspNetCore.Http;
 
 namespace CleanArchitecture.Application.Common.Responses
 {
@@ -19,7 +16,7 @@ namespace CleanArchitecture.Application.Common.Responses
             };
         }
 
-        public static Response<T> SuccessPaged<T>(T data, int pageNumber, int pageSize, int totalCount, string message = "Success")
+        public static Response<T> SuccessPaged<T>(T data, PaginationModel pagination, int totalCount, string message = "Success")
         {
             return new Response<T>
             {
@@ -29,8 +26,8 @@ namespace CleanArchitecture.Application.Common.Responses
                 Message = message,
                 Meta = new PagedMetaData
                 {
-                    PageNumber = pageNumber,
-                    PageSize = pageSize,
+                    PageNumber = pagination.PageNumber,
+                    PageSize = pagination.PageSize,
                     TotalCount = totalCount
                 }
             };
@@ -67,13 +64,27 @@ namespace CleanArchitecture.Application.Common.Responses
             };
         }
 
-        public static Response<T> BadRequest<T>(string message = "Bad Request")
+        public static Response<T> BadRequest<T>(string message = "Bad Request", List<string>? errors = null, T? data = default)
         {
             return new Response<T>
             {
                 StatusCode = 400,
                 Succeeded = false,
-                Message = message
+                Message = message,
+                Errors = errors,
+                Data = data
+            };
+        }
+
+        public static Response<T> Conflict<T>(string message = "Conflict", T? data = default, List<string>? errors = null)
+        {
+            return new Response<T>
+            {
+                Succeeded = false,
+                StatusCode = StatusCodes.Status409Conflict,
+                Message = message,
+                Data = data,
+                Errors = errors
             };
         }
     }

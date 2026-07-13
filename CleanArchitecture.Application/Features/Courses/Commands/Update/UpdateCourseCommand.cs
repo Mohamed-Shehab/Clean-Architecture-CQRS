@@ -1,14 +1,22 @@
 ﻿using CleanArchitecture.Application.Common.Responses;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace CleanArchitecture.Application.Features.Courses.Commands.Update
 {
-    public sealed record UpdateCourseCommand(int Id, string Title, int MaxStudents) : IRequest<Response<object>>
+    public sealed record UpdateCourseCommand : IRequest<Response<int>>
     {
+        [JsonIgnore]
+        public int Id { get; init; }
+
+        public string NameEn { get; init; } = null!;
+
+        public string NameAr { get; init; } = null!;
+
+        public string? Description { get; init; }
+
+        public int Capacity { get; init; }
+
+        public bool IsActive { get; init; }
     }
 }

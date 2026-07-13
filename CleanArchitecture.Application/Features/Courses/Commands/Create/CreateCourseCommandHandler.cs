@@ -7,11 +7,6 @@ using CleanArchitecture.Application.Common.Responses;
 using CleanArchitecture.Domain.Entities;
 using MediatR;
 using Microsoft.Extensions.Localization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CleanArchitecture.Application.Features.Courses.Commands.Create
 {
@@ -35,7 +30,22 @@ namespace CleanArchitecture.Application.Features.Courses.Commands.Create
 
         public async Task<Response<int>> Handle(CreateCourseCommand request, CancellationToken cancellationToken)
         {
-            Course course = _mapper.Map<Course>(request);
+            // Check if a course with the same name already exists
+            var existingCourseId = await _courseRepository.GetIdByNameAsync(
+                request.NameEn,
+                request.NameAr,
+                cancellationToken);
+
+            if (existingCourseId.HasValue)
+            {
+                return ResponseHandler.Conflict(_localizer[Errors.AlreadyExists, _localizer[Entities.Course]],
+                    data: existingCourseId.Value);
+            }
+            
+
+            // Creating a new course
+            var course = _mapper.Map<Course>(request);
+            course.CreatedAt = DateTime.UtcNow;
 
             await _courseRepository.AddAsync(course, cancellationToken);
 

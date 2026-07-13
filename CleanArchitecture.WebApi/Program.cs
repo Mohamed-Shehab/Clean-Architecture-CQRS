@@ -1,7 +1,7 @@
 using CleanArchitecture.Application;
 using CleanArchitecture.Infrastructure;
 using CleanArchitecture.WebApi.Middleware;
-using FluentValidation.AspNetCore;
+using Swashbuckle.AspNetCore.Filters;
 using System.Reflection;
 
 namespace CleanArchitecture.WebApi
@@ -12,19 +12,31 @@ namespace CleanArchitecture.WebApi
         {
             var builder = WebApplication.CreateBuilder(args);
 
+
             // Add services to the container.
             builder.Services.AddControllers();
 
+
             // Swagger
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen(option =>
+            builder.Services.AddSwaggerGen(options =>
             {
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+
+                options.IncludeXmlComments(xmlPath);
+
+                options.ExampleFilters();
             });
+
+            builder.Services.AddSwaggerExamplesFromAssemblyOf<Program>();
+
 
             // Add Dependencies
             builder.Services
                 .AddInfrastructure(builder.Configuration)
                 .AddApplication();
+
 
             // Localization
             builder.Services.AddLocalization(option =>

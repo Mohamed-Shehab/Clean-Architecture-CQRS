@@ -1,14 +1,11 @@
 ﻿using CleanArchitecture.Application.Common.Responses;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CleanArchitecture.Application.Features.Courses.Commands.Create
 {
-    public sealed record CreateCourseCommand(string Title, int MaxStudents) : IRequest<Response<int>>
-    {
-    }
+    public sealed record CreateCourseCommand(string NameEn,
+                                             string NameAr,
+                                             string? Description,
+                                             int Capacity,
+                                             bool IsActive = true) : IRequest<Response<int>>;
 }

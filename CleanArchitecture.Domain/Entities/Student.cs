@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace CleanArchitecture.Domain.Entities
 {
@@ -11,26 +6,25 @@ namespace CleanArchitecture.Domain.Entities
     {
         public Student()
         {
-            StudentCourses = new List<StudentCourse>();
+            Enrollments = new List<Enrollment>();
         }
 
         [Key]
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(100)]
-        public string Name { get; set; }
+        public DateOnly DateOfBirth { get; set; }
 
-        [Required]
-        [EmailAddress]
-        [MaxLength(150)]
-        public string Email { get; set; }
+        [MaxLength(250)]
+        public string? Address { get; set; }
 
+
+        // Foreign Key
         [Required]
-        [MinLength(6)]
-        public string Password { get; set; }
+        public int UserId { get; set; }
+
 
         // Navigation Property
-        public virtual ICollection<StudentCourse> StudentCourses { get; set; }
+        public virtual ICollection<Enrollment> Enrollments { get; set; }
     }
 }

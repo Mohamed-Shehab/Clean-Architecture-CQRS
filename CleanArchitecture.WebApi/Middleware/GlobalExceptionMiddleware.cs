@@ -39,8 +39,7 @@ namespace CleanArchitecture.WebApi.Middleware
                 .Select(x => x.PropertyName + ": " + x.ErrorMessage)
                 .ToList();
 
-            var response = ResponseHandler.BadRequest<object>(_localizer[ValidationErrors.ValidationError]);
-            response.Errors = errors;
+            var response = ResponseHandler.BadRequest<object>(_localizer[ValidationErrors.ValidationError], errors);
 
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
 

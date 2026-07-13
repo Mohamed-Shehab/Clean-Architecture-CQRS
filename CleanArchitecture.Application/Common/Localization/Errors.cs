@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CleanArchitecture.Application.Common.Localization
+﻿namespace CleanArchitecture.Application.Common.Localization
 {
     public static class Errors
     {
         public const string Unauthorized = "Unauthorized";
-        public const string StudentAlreadyAssigned = "StudentAlreadyAssigned";
-        public const string StudentNotAssigned = "StudentNotAssigned";
-        public const string CourseIsFull = "CourseIsFull";
+        public const string AlreadyEnrolled = "AlreadyEnrolled";
+        public const string AlreadyCompleted = "AlreadyCompleted";
+        public const string NotEnrolled = "NotEnrolled";
+        public const string Full = "Full";
+        public const string Inactive = "Inactive";
+        public const string AlreadyUsed = "AlreadyUsed";
+        public const string AlreadyExists = "AlreadyExists";
+        public const string DeletionNotAllowed = "DeletionNotAllowed";
+
     }
 }

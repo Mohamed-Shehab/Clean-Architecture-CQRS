@@ -1,50 +1,64 @@
-﻿using CleanArchitecture.Application.Common.Interfaces.Repositories;
-using CleanArchitecture.Application.Common.Localization;
+﻿using CleanArchitecture.Application.Common.Localization;
 using CleanArchitecture.Application.Common.Localization.Resources;
 using FluentValidation;
 using Microsoft.Extensions.Localization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CleanArchitecture.Application.Features.Students.Commands.Create
 {
     public class CreateStudentCommandValidator : AbstractValidator<CreateStudentCommand>
     {
-        private readonly IStudentRepository _studentRepository;
         private readonly IStringLocalizer<SharedResources> _localizer;
 
-        public CreateStudentCommandValidator(IStudentRepository studentRepository,
-                                             IStringLocalizer<SharedResources> localizer)
+        public CreateStudentCommandValidator(IStringLocalizer<SharedResources> localizer)
         {
-            this._studentRepository = studentRepository;
             this._localizer = localizer;
 
-            ValidateName();
+            ValidateFirstName();
+            ValidateLastName();
             ValidateEmail();
+            ValidatePhoneNumber();
             ValidatePassword();
+            ValidateDateOfBirth();
+            ValidateAddress();
         }
 
-        private void ValidateName()
+        private void ValidateFirstName()
         {
-            RuleFor(x => x.Name)
-                .NotEmpty().WithMessage(_localizer[ValidationErrors.Required, _localizer[Fields.Name]]);
+            RuleFor(x => x.FirstName)
+                .NotEmpty().WithMessage(_localizer[ValidationErrors.Required, _localizer[Fields.FirstName]]);
 
+            RuleFor(x => x.FirstName)
+            .MinimumLength(2).WithMessage(_localizer[ValidationErrors.MinLength, _localizer[Fields.FirstName], 2])
+            .MaximumLength(50).WithMessage(_localizer[ValidationErrors.MaxLength, _localizer[Fields.FirstName], 50])
+            .When(x => !string.IsNullOrWhiteSpace(x.FirstName));
+        }
 
-            RuleFor(x => x.Name)
-                .MinimumLength(3).WithMessage(_localizer[ValidationErrors.MinLength, _localizer[Fields.Name], 3])
-                .MaximumLength(100).WithMessage(_localizer[ValidationErrors.MaxLength, _localizer[Fields.Name], 150])
-                .When(x => !string.IsNullOrEmpty(x.Name));
+        private void ValidateLastName()
+        {
+            RuleFor(x => x.LastName)
+                .NotEmpty().WithMessage(_localizer[ValidationErrors.Required, _localizer[Fields.LastName]]);
+
+            RuleFor(x => x.LastName)
+            .MinimumLength(2).WithMessage(_localizer[ValidationErrors.MinLength, _localizer[Fields.LastName], 2])
+            .MaximumLength(50).WithMessage(_localizer[ValidationErrors.MaxLength, _localizer[Fields.LastName], 50])
+            .When(x => !string.IsNullOrWhiteSpace(x.LastName));
         }
 
         private void ValidateEmail()
         {
             RuleFor(x => x.Email)
                 .NotEmpty().WithMessage(_localizer[ValidationErrors.Required, _localizer[Fields.Email]])
-                .EmailAddress().WithMessage(_localizer[ValidationErrors.InvalidEmail, _localizer[Fields.Email]])
-                .MustAsync(BeUniqueEmail).WithMessage(_localizer[ValidationErrors.AlreadyUsed, _localizer[Fields.Email]]);
+                .EmailAddress().WithMessage(_localizer[ValidationErrors.InvalidEmail, _localizer[Fields.Email]]);
+        }
+
+        private void ValidatePhoneNumber()
+        {
+            RuleFor(x => x.PhoneNumber)
+                .NotEmpty().WithMessage(_localizer[ValidationErrors.Required, _localizer[Fields.PhoneNumber]]);
+
+            RuleFor(x => x.PhoneNumber)
+                .MaximumLength(20).WithMessage(_localizer[ValidationErrors.MaxLength, _localizer[Fields.PhoneNumber], 20])
+                .When(x => !string.IsNullOrWhiteSpace(x.PhoneNumber));
         }
 
         private void ValidatePassword()
@@ -57,13 +71,19 @@ namespace CleanArchitecture.Application.Features.Students.Commands.Create
                 .When(x => !string.IsNullOrEmpty(x.Password));
         }
 
-        private async Task<bool> BeUniqueEmail(
-            string email,
-            CancellationToken cancellationToken)
+        private void ValidateDateOfBirth()
         {
-            var exists = await _studentRepository.AnyAsync(s => s.Email == email, cancellationToken);
+            RuleFor(x => x.DateOfBirth)
+                .LessThan(DateOnly.FromDateTime(DateTime.UtcNow))
+                .WithMessage(_localizer[ValidationErrors.InvalidValue, _localizer[Fields.DateOfBirth]]);
+        }
 
-            return !exists;
+        private void ValidateAddress()
+        {
+            RuleFor(x => x.Address)
+                .MaximumLength(250)
+                .WithMessage(_localizer[ValidationErrors.MaxLength, _localizer[Fields.Address], 250])
+                .When(x => !string.IsNullOrWhiteSpace(x.Address));
         }
 
     }

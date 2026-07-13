@@ -153,8 +153,8 @@
   <data name="InvalidEmail" xml:space="preserve">
     <value>تنسيق {0} غير صحيح</value>
   </data>
-  <data name="Name" xml:space="preserve">
-    <value>الاسم</value>
+  <data name="FirstName" xml:space="preserve">
+    <value>الاسم الأول</value>
   </data>
   <data name="Email" xml:space="preserve">
     <value>البريد الإلكتروني</value>
@@ -168,9 +168,6 @@
   <data name="SomethingWentWrong" xml:space="preserve">
     <value>حدث خطأ ما</value>
   </data>
-  <data name="Title" xml:space="preserve">
-    <value>العنوان</value>
-  </data>
   <data name="MinValue" xml:space="preserve">
     <value>يجب أن تكون قيمة {0} على الأقل {1}</value>
   </data>
@@ -181,27 +178,93 @@
     <value>الحد الأقصى للطلاب</value>
   </data>
   <data name="Course" xml:space="preserve">
-    <value>الكورس</value>
+    <value>المقرر</value>
   </data>
-  <data name="StudentAlreadyAssigned" xml:space="preserve">
-    <value>الطالب مسجل بالفعل في هذا الكورس</value>
+  <data name="AlreadyEnrolled" xml:space="preserve">
+    <value>{0} مسجل بالفعل في هذا {1}</value>
   </data>
-  <data name="CourseIsFull" xml:space="preserve">
-    <value>الكورس مكتمل ولا يمكن تسجيل المزيد من الطلاب</value>
+  <data name="Full" xml:space="preserve">
+    <value>{0} مكتمل، ولا يمكن إضافة المزيد من {1}</value>
   </data>
-  <data name="StudentAssignedSuccessfully" xml:space="preserve">
-    <value>تم تسجيل الطالب في الكورس بنجاح</value>
+  <data name="EnrolledSuccessfully" xml:space="preserve">
+    <value>تم تسجيل {0} بنجاح</value>
   </data>
   <data name="AlreadyExists" xml:space="preserve">
-    <value>{0} موجود بالفعل</value>
+    <value>هذا {0} موجود بالفعل</value>
   </data>
-  <data name="StudentNotAssigned" xml:space="preserve">
-    <value>الطالب غير مسجل في هذا الكورس</value>
+  <data name="NotEnrolled" xml:space="preserve">
+    <value>{0} غير مسجل في هذا {1}</value>
   </data>
   <data name="StudentRemovedSuccessfully" xml:space="preserve">
     <value>تم حذف الطالب من الكورس بنجاح</value>
   </data>
   <data name="NoCoursesForStudent" xml:space="preserve">
     <value>لا توجد كورسات لهذا الطالب</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>اسم العائلة</value>
+  </data>
+  <data name="PhoneNumber" xml:space="preserve">
+    <value>رقم الهاتف</value>
+  </data>
+  <data name="DateOfBirth" xml:space="preserve">
+    <value>تاريخ الميلاد</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>العنوان</value>
+  </data>
+  <data name="InvalidValue" xml:space="preserve">
+    <value>قيمة {0} غير صحيحة</value>
+  </data>
+  <data name="CreationFailed" xml:space="preserve">
+    <value>فشل إنشاء {0}</value>
+  </data>
+  <data name="UpdateFailed" xml:space="preserve">
+    <value>فشل تعديل بيانات {0}</value>
+  </data>
+  <data name="DeletionFailed" xml:space="preserve">
+    <value>فشل حذف {0}</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>حساب المستخدم</value>
+  </data>
+  <data name="RetrievedSuccessfully" xml:space="preserve">
+    <value>تم استرجاع {0} بنجاح</value>
+  </data>
+  <data name="Students" xml:space="preserve">
+    <value>الطلاب</value>
+  </data>
+  <data name="Courses" xml:space="preserve">
+    <value>الكورسات</value>
+  </data>
+  <data name="NameEn" xml:space="preserve">
+    <value>اسم {0} بالإنجليزية </value>
+  </data>
+  <data name="NameAr" xml:space="preserve">
+    <value>اسم {0} بالعربية </value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>وصف {0}</value>
+  </data>
+  <data name="Capacity" xml:space="preserve">
+    <value>سعة {0}</value>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>معرف {0}</value>
+  </data>
+  <data name="DeletionNotAllowed" xml:space="preserve">
+    <value>لا يمكن حذف {0} لأنه مرتبط ببيانات أخرى</value>
+  </data>
+  <data name="Inactive" xml:space="preserve">
+    <value>{0} غير نشط</value>
+  </data>
+  <data name="UnenrolledSuccessfully" xml:space="preserve">
+    <value>تم إلغاء تسجيل {0} بنجاح</value>
+  </data>
+  <data name="AlreadyCompleted" xml:space="preserve">
+    <value>أكمل {0} هذا {0} بالفعل</value>
+  </data>
+  <data name="CompletedSuccessfully" xml:space="preserve">
+    <value>أكمل {0} هذا {1} بنجاح</value>
   </data>
 </root>

@@ -133,7 +133,7 @@
     <value>{0} deleted successfully</value>
   </data>
   <data name="AlreadyUsed" xml:space="preserve">
-    <value>{0} already used</value>
+    <value>This {0} already used</value>
   </data>
   <data name="Unauthorized" xml:space="preserve">
     <value>Unauthorized access</value>
@@ -153,8 +153,8 @@
   <data name="InvalidEmail" xml:space="preserve">
     <value>{0} format is invalid</value>
   </data>
-  <data name="Name" xml:space="preserve">
-    <value>Name</value>
+  <data name="FirstName" xml:space="preserve">
+    <value>First Name</value>
   </data>
   <data name="Email" xml:space="preserve">
     <value>Email</value>
@@ -168,9 +168,6 @@
   <data name="SomethingWentWrong" xml:space="preserve">
     <value>Something went wrong</value>
   </data>
-  <data name="Title" xml:space="preserve">
-    <value>Title</value>
-  </data>
   <data name="MinValue" xml:space="preserve">
     <value>{0} must be at least {1}</value>
   </data>
@@ -183,25 +180,91 @@
   <data name="Course" xml:space="preserve">
     <value>Course</value>
   </data>
-  <data name="StudentAlreadyAssigned" xml:space="preserve">
-    <value>Student is already assigned to this course</value>
+  <data name="AlreadyEnrolled" xml:space="preserve">
+    <value>{0} is already enrolled in this {1}</value>
   </data>
-  <data name="CourseIsFull" xml:space="preserve">
-    <value>Course has reached maximum capacity</value>
+  <data name="Full" xml:space="preserve">
+    <value>{0} is full, No more {1} can be added</value>
   </data>
-  <data name="StudentAssignedSuccessfully" xml:space="preserve">
-    <value>Student assigned to the course successfully</value>
+  <data name="EnrolledSuccessfully" xml:space="preserve">
+    <value>{0} has been enrolled successfully</value>
   </data>
   <data name="AlreadyExists" xml:space="preserve">
     <value>{0} already exists</value>
   </data>
-  <data name="StudentNotAssigned" xml:space="preserve">
-    <value>Student is not assigned to this course</value>
+  <data name="NotEnrolled" xml:space="preserve">
+    <value>{0} is not enrolled in this {1}</value>
   </data>
   <data name="StudentRemovedSuccessfully" xml:space="preserve">
     <value>Student removed from course successfully</value>
   </data>
   <data name="NoCoursesForStudent" xml:space="preserve">
     <value>No courses found for this student</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>Last Name</value>
+  </data>
+  <data name="PhoneNumber" xml:space="preserve">
+    <value>Phone Number</value>
+  </data>
+  <data name="DateOfBirth" xml:space="preserve">
+    <value>Date Of Birth</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="InvalidValue" xml:space="preserve">
+    <value>{0} is not valid</value>
+  </data>
+  <data name="CreationFailed" xml:space="preserve">
+    <value>Failed to create the {0}</value>
+  </data>
+  <data name="UpdateFailed" xml:space="preserve">
+    <value>Failed to update the {0}</value>
+  </data>
+  <data name="DeletionFailed" xml:space="preserve">
+    <value>Failed to delete the {0}</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>User account</value>
+  </data>
+  <data name="RetrievedSuccessfully" xml:space="preserve">
+    <value>{0} retrieved successfully</value>
+  </data>
+  <data name="Students" xml:space="preserve">
+    <value>Students</value>
+  </data>
+  <data name="Courses" xml:space="preserve">
+    <value>Courses</value>
+  </data>
+  <data name="NameEn" xml:space="preserve">
+    <value>English {0} Name</value>
+  </data>
+  <data name="NameAr" xml:space="preserve">
+    <value>Arabic {0} Name</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>{0} Description</value>
+  </data>
+  <data name="Capacity" xml:space="preserve">
+    <value>{0} Capacity</value>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>{0} Id</value>
+  </data>
+  <data name="DeletionNotAllowed" xml:space="preserve">
+    <value>Cannot delete {0} because it is associated with other data.</value>
+  </data>
+  <data name="Inactive" xml:space="preserve">
+    <value>{0} is inactive</value>
+  </data>
+  <data name="UnenrolledSuccessfully" xml:space="preserve">
+    <value>{0} has been unenrolled successfully</value>
+  </data>
+  <data name="AlreadyCompleted" xml:space="preserve">
+    <value>{0} has already completed this {1}</value>
+  </data>
+  <data name="CompletedSuccessfully" xml:space="preserve">
+    <value>{0} completed this {1} successfully</value>
   </data>
 </root>

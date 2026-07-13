@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
 
 namespace CleanArchitecture.Application.Common.Interfaces.Repositories
 {
@@ -12,13 +7,6 @@ namespace CleanArchitecture.Application.Common.Interfaces.Repositories
         Task<T?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
 
         Task<List<T>> GetAllAsync(CancellationToken cancellationToken = default);
-
-        Task<(List<T> Data, int TotalCount)> GetPagedAsync(
-            Expression<Func<T, bool>>? filter = null,
-            Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
-            int pageNumber = 1,
-            int pageSize = 10,
-            CancellationToken cancellationToken = default);
 
         Task<List<T>> FindAsync(
             Expression<Func<T, bool>> predicate,

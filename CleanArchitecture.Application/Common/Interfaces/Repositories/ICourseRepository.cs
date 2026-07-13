@@ -1,31 +1,52 @@
-﻿using CleanArchitecture.Application.Features.Courses.DTOs;
+﻿using CleanArchitecture.Application.Common.Models.Querying;
+using CleanArchitecture.Application.Features.Courses.Queries.Get.Management;
+using CleanArchitecture.Application.Features.Courses.Queries.Get.Management.Models;
+using CleanArchitecture.Application.Features.Courses.Queries.Get.Public;
+using CleanArchitecture.Application.Features.Courses.Queries.Get.Public.Modles;
+using CleanArchitecture.Application.Features.Courses.Queries.GetById.Management;
+using CleanArchitecture.Application.Features.Courses.Queries.GetById.Public;
 using CleanArchitecture.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CleanArchitecture.Application.Common.Interfaces.Repositories
 {
     public interface ICourseRepository : IRepository<Course>
     {
-        Task<CourseDetailsDto?> GetCourseDetailsAsync(int id, CancellationToken cancellationToken);
-
-        Task<(List<CourseDto> Data, int TotalCount)> GetPagedCoursesAsync(
-            int pageNumber,
-            int pageSize,
+        Task<int?> GetIdByNameAsync(
+            string nameEn,
+            string nameAr,
             CancellationToken cancellationToken);
 
-        Task<(List<CourseStudentDto> Data, int TotalCount)> GetStudentsAsync(
+
+        Task<int?> GetIdByNameAsync(
+            int excludedCourseId,
+            string nameEn, 
+            string  nameAr, 
+            CancellationToken cancellationToken);
+
+
+        Task<(List<CourseManagementDto> Data, int TotalCount)> GetCoursesManagementAsync(
+            CourseManagementFilterModel? filter,
+            CourseManagementSortingModel? sorting,
+            PaginationModel pagination,
+            CancellationToken cancellationToken);
+
+
+        Task<(List<CourseDto> Data, int TotalCount)> GetCoursesAsync(
+            CourseFilterModel? filter,
+            CourseSortingModel? sorting,
+            PaginationModel pagination,
+            CancellationToken cancellationToken);
+
+
+        Task<CourseManagementDetailsDto?> GetCourseManagementByIdAsync(
             int courseId,
-            string? search,
-            Expression<Func<Student, object>> property,
-            bool descending,
-            int pageNumber,
-            int pageSize,
             CancellationToken cancellationToken);
+
+
+        Task<CourseDetailsDto?> GetCourseByIdAsync(
+            int courseId,
+            CancellationToken cancellationToken);
+
 
     }
 }
