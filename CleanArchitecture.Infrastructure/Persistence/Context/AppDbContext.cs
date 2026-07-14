@@ -16,10 +16,9 @@ namespace CleanArchitecture.Infrastructure.Persistence.Context
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(builder);
+            builder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
 
-            builder.Entity<Enrollment>()
-                .HasKey(sc => new { sc.StudentId, sc.CourseId });
+            base.OnModelCreating(builder);
         }
 
         public DbSet<Student> Students { get; set; }

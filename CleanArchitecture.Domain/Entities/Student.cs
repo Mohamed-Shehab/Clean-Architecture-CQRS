@@ -1,30 +1,25 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace CleanArchitecture.Domain.Entities
+﻿namespace CleanArchitecture.Domain.Entities
 {
     public class Student
     {
-        public Student()
-        {
-            Enrollments = new List<Enrollment>();
-        }
 
-        [Key]
         public int Id { get; set; }
 
-        [Required]
         public DateOnly DateOfBirth { get; set; }
 
-        [MaxLength(250)]
         public string? Address { get; set; }
+
+        public bool IsDeleted { get; set; }
+
+        public DateTime? DeletedAt { get; set; }
 
 
         // Foreign Key
-        [Required]
         public int UserId { get; set; }
 
 
         // Navigation Property
-        public virtual ICollection<Enrollment> Enrollments { get; set; }
+        public virtual ICollection<Enrollment> Enrollments { get; set; } = new HashSet<Enrollment>();
+
     }
 }

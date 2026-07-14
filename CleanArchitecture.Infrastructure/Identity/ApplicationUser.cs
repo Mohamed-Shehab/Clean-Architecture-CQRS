@@ -8,11 +8,15 @@ namespace CleanArchitecture.Infrastructure.Identity
 
         public string LastName { get; set; } = null!;
 
-        public bool IsActive { get; set; } = true;
+        public bool IsActive { get; set; }
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public bool IsDeleted { get; set; }
+
+        public DateTime CreatedAt { get; set; }
 
         public DateTime? UpdatedAt { get; set; }
+
+        public DateTime? DeletedAt { get; set; }
 
         public DateTime? LastLoginAt { get; set; }
     }

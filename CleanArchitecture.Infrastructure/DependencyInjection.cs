@@ -23,11 +23,13 @@ namespace CleanArchitecture.Infrastructure
             services.AddDbContext<AppDbContext>(option => 
                 option.UseSqlServer(configuration.GetConnectionString("context")));
 
+
             // Registration of Identity
             services
             .AddIdentity<ApplicationUser, IdentityRole<int>>(options =>
             {
                 options.User.RequireUniqueEmail = true;
+                options.SignIn.RequireConfirmedEmail = true;
 
                 options.Password.RequiredLength = 8;
                 options.Password.RequireDigit = true;
@@ -41,22 +43,28 @@ namespace CleanArchitecture.Infrastructure
             .AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
 
+
             // Registration of Identity Service
             services.AddScoped<IIdentityService, IdentityService>();
+
 
             // Registration of Localization Service
             services.AddScoped<ILocalizationService, LocalizationService>();
 
+
             // Registration of Generic Repository
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            
 
             // Registrarion of Repositories
             services.AddScoped<IStudentRepository, StudentRepository>();
             services.AddScoped<ICourseRepository, CourseRepository>();
             services.AddScoped<IEnrollmentRepository, EnrollmentRepository>();
 
+
             // Registration of Unit Of Work
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 
             return services;
         }
