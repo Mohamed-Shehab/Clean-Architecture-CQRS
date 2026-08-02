@@ -26,35 +26,35 @@ namespace CleanArchitecture.Infrastructure.Persistence.Repositories
         }
 
 
-        public async Task<int?> GetIdByNameAsync(string nameEn,
-                                                 string nameAr,
-                                                 CancellationToken cancellationToken)
+        public async Task<Course?> GetCourseByNameAsync(string nameEn,
+                                                        string nameAr,
+                                                        CancellationToken cancellationToken)
         {
             return await _context.Courses
+                .IgnoreQueryFilters()
                 .Where(c => c.NameEn == nameEn || c.NameAr == nameAr)
-                .Select(c => (int?)c.Id)
                 .FirstOrDefaultAsync(cancellationToken);
         }
         
 
-        public async Task<int?> GetIdByNameAsync(int excludedCourseId,
-                                                 string nameEn,
-                                                 string nameAr,
-                                                 CancellationToken cancellationToken)
+        public async Task<Course?> GetCourseByNameAsync(int excludedCourseId,
+                                                        string nameEn,
+                                                        string nameAr,
+                                                        CancellationToken cancellationToken)
         {
             return await _context.Courses
+                .IgnoreQueryFilters()
                 .Where(c => c.Id != excludedCourseId
                             && (c.NameEn == nameEn || c.NameAr == nameAr))
-                .Select(c => (int?)c.Id)
                 .FirstOrDefaultAsync(cancellationToken);
                 
         }
 
 
         public async Task<(List<CourseManagementDto> Data, int TotalCount)> GetCoursesManagementAsync(CourseManagementFilterModel? filter,
-                                                                                  CourseManagementSortingModel? sorting,
-                                                                                  PaginationModel pagination,
-                                                                                  CancellationToken cancellationToken)
+                                                                                                      CourseManagementSortingModel? sorting,
+                                                                                                      PaginationModel pagination,
+                                                                                                      CancellationToken cancellationToken)
         {
             // Base query
             var query = _context.Courses.AsQueryable();
@@ -98,8 +98,8 @@ namespace CleanArchitecture.Infrastructure.Persistence.Repositories
 
 
                 CourseManagementOrderBy.EnrolledStudents => descending 
-                    ? query.OrderByDescending(c => c.Enrollments.Count(e => e.Status == EnrollmentStatus.Active)) 
-                    : query.OrderBy(c => c.Enrollments.Count(e => e.Status == EnrollmentStatus.Active)),
+                    ? query.OrderByDescending(c => c.ActiveEnrollmentsCount) 
+                    : query.OrderBy(c => c.ActiveEnrollmentsCount),
 
                 CourseManagementOrderBy.IsActive => descending 
                     ? query.OrderByDescending(c => c.IsActive) 
@@ -119,22 +119,17 @@ namespace CleanArchitecture.Infrastructure.Persistence.Repositories
             var courses = await query
                 .Skip((pagination.PageNumber - 1) * pagination.PageSize)
                 .Take(pagination.PageSize)
-                .Select(c => new
+                .Select(c => new CourseManagementDto
                 {
-                    Course = c,
-                    EnrolledStudentsCount = c.Enrollments.Count(e => e.Status == EnrollmentStatus.Active)
-                })
-                .Select(x => new CourseManagementDto
-                {
-                    Id = x.Course.Id,
+                    Id = c.Id,
 
-                    Name = _localizationService.GetLocalized(x.Course.NameAr, x.Course.NameEn),
+                    Name = _localizationService.GetLocalized(c.NameAr, c.NameEn),
 
-                    EnrolledStudentsCount = x.EnrolledStudentsCount,
+                    EnrolledStudentsCount = c.ActiveEnrollmentsCount,
 
-                    AvailableSeats = x.Course.Capacity - x.EnrolledStudentsCount,
+                    AvailableSeats = c.Capacity - c.ActiveEnrollmentsCount,
 
-                    IsActive = x.Course.IsActive
+                    IsActive = c.IsActive
                 })
                 .ToListAsync(cancellationToken);
 
@@ -165,10 +160,10 @@ namespace CleanArchitecture.Infrastructure.Persistence.Repositories
                 if (filter.HasAvailableSeats.HasValue)
                 {
                     if (filter.HasAvailableSeats.Value)
-                        query = query.Where(c => c.Capacity > c.Enrollments.Count(e => e.Status == EnrollmentStatus.Active));
+                        query = query.Where(c => c.Capacity > c.ActiveEnrollmentsCount);
 
                     else
-                        query = query.Where(c => c.Capacity <= c.Enrollments.Count(e => e.Status == EnrollmentStatus.Active));
+                        query = query.Where(c => c.Capacity <= c.ActiveEnrollmentsCount);
 
                 }
             }
@@ -191,8 +186,8 @@ namespace CleanArchitecture.Infrastructure.Persistence.Repositories
 
 
                 CourseOrderBy.AvailableSeats => descending
-                    ? query.OrderByDescending(c => c.Capacity - c.Enrollments.Count(e => e.Status == EnrollmentStatus.Active))
-                    : query.OrderBy(c => c.Capacity - c.Enrollments.Count(e => e.Status == EnrollmentStatus.Active)),
+                    ? query.OrderByDescending(c => c.Capacity - c.ActiveEnrollmentsCount)
+                    : query.OrderBy(c => c.Capacity - c.ActiveEnrollmentsCount),
 
 
                 _ => descending
@@ -209,20 +204,15 @@ namespace CleanArchitecture.Infrastructure.Persistence.Repositories
             var courses = await query
                 .Skip((pagination.PageNumber - 1) * pagination.PageSize)
                 .Take(pagination.PageSize)
-                .Select(c => new
+                .Select(c => new CourseDto
                 {
-                    Course = c,
-                    EnrolledStudentsCount = c.Enrollments.Count(e => e.Status == EnrollmentStatus.Active)
-                })
-                .Select(x => new CourseDto
-                {
-                    Id = x.Course.Id,
+                    Id = c.Id,
 
-                    Name = _localizationService.GetLocalized(x.Course.NameAr, x.Course.NameEn),
+                    Name = _localizationService.GetLocalized(c.NameAr, c.NameEn),
 
-                    AvailableSeats = x.Course.Capacity - x.EnrolledStudentsCount,
+                    AvailableSeats = c.Capacity - c.ActiveEnrollmentsCount,
 
-                    IsFull =  x.Course.Capacity <= x.EnrolledStudentsCount
+                    IsFull =  c.Capacity <= c.ActiveEnrollmentsCount
                 })
                 .ToListAsync(cancellationToken);
 
@@ -242,7 +232,7 @@ namespace CleanArchitecture.Infrastructure.Persistence.Repositories
                     Name = _localizationService.GetLocalized(c.NameAr, c.NameEn),
                     Description = c.Description,
                     Capacity = c.Capacity,
-                    EnrolledStudentsCount = c.Enrollments.Count(e => e.Status == EnrollmentStatus.Active),
+                    EnrolledStudentsCount = c.ActiveEnrollmentsCount,
                     IsActive = c.IsActive,
                     CreatedAt = c.CreatedAt,
                     UpdatedAt = c.UpdatedAt
@@ -264,7 +254,7 @@ namespace CleanArchitecture.Infrastructure.Persistence.Repositories
 
                     Description = c.Description,
 
-                    AvailableSeats = c.Capacity - c.Enrollments.Count(e => e.Status == EnrollmentStatus.Active)
+                    AvailableSeats = c.Capacity - c.ActiveEnrollmentsCount
                 })
                 .FirstOrDefaultAsync(cancellationToken);
         }

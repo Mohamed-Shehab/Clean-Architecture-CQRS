@@ -3,7 +3,9 @@
     public enum StudentOrderBy
     {
         Id,
+
         FullName,
+
         DateOfBirth
     }
 }

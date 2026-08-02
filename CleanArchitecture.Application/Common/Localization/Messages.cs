@@ -5,6 +5,7 @@
         public const string CreatedSuccessfully = "CreatedSuccessfully";
         public const string UpdatedSuccessfully = "UpdatedSuccessfully";
         public const string DeletedSuccessfully = "DeletedSuccessfully";
+        public const string RestoredSuccessfully = "RestoredSuccessfully";
         public const string CreationFailed = "CreationFailed";
         public const string UpdateFailed = "UpdateFailed";
         public const string DeletionFailed = "DeletionFailed";

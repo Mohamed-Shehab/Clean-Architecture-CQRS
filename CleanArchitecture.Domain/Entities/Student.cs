@@ -11,7 +11,8 @@
 
         public bool IsDeleted { get; set; }
 
-        public DateTime? DeletedAt { get; set; }
+
+        public byte[] RowVersion { get; set; } = null!;
 
 
         // Foreign Key

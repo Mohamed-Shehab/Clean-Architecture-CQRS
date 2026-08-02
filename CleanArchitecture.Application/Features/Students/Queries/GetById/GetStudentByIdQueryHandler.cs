@@ -27,8 +27,10 @@ namespace CleanArchitecture.Application.Features.Students.Queries.GetById
             if (student == null)
             {
                 return ResponseHandler.NotFound<StudentDetailsDto>(
-                    _localizer[Messages.NotFound, _localizer[Entities.Student]]);
+                    _localizer[Messages.NotFound, _localizer[Entities.Student]],
+                    errorCode: ErrorCodes.Student.NotFound);
             }
+
 
             return ResponseHandler.Success(
                 student,

@@ -28,6 +28,10 @@ namespace CleanArchitecture.Infrastructure.Persistence.Configurations
                    .HasDefaultValue(false);
 
 
+            builder.Property(x => x.RowVersion)
+                   .IsRowVersion();
+
+
             // Query filters
             builder.HasQueryFilter(s => !s.IsDeleted);
 

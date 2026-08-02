@@ -34,7 +34,11 @@ namespace CleanArchitecture.Application.Features.Enrollments.Queries.GetCourseEn
             var isCourseExists = await _courseRepository.AnyAsync(c => c.Id == request.CourseId, cancellationToken);
 
             if (!isCourseExists)
-                return ResponseHandler.NotFound<List<CourseEnrollmentDto>>(_localizer[Messages.NotFound, _localizer[Entities.Course]]);
+            {
+                return ResponseHandler.NotFound<List<CourseEnrollmentDto>>(
+                    _localizer[Messages.NotFound, _localizer[Entities.Course]],
+                    errorCode: ErrorCodes.Course.NotFound);
+            }
 
 
             var (students, totalCount) = await _enrollmentRepository.GetCourseEnrollmentsAsync(

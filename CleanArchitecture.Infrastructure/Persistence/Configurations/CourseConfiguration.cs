@@ -44,6 +44,10 @@ namespace CleanArchitecture.Infrastructure.Persistence.Configurations
                    .HasDefaultValueSql("GETUTCDATE()");
 
 
+            builder.Property(x => x.RowVersion)
+                   .IsRowVersion();
+
+
             // Query filters
             builder.HasQueryFilter(c => !c.IsDeleted);
 

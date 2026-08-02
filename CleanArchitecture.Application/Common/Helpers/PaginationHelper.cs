@@ -2,7 +2,7 @@
 
 namespace CleanArchitecture.Application.Common.Helpers
 {
-    public static class PaginationExtensions
+    public static class PaginationHelper
     {
         public static void Normalize(this PaginationModel pagination, 
                                      int defaultPageSize = 10, 
