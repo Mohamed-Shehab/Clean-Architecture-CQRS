@@ -9,22 +9,32 @@ namespace CleanArchitecture.Infrastructure.Identity.Services
     {
         private readonly UserManager<ApplicationUser> _userManager;
 
+
         public IdentityService(UserManager<ApplicationUser> userManager)
         {
             this._userManager = userManager;
         }
 
 
-        public Task<bool> IsEmailUsedAsync(string email, CancellationToken cancellationToken)
+        public Task<bool> IsEmailUsedAsync(string email, 
+                                           CancellationToken cancellationToken)
         {
             return _userManager.Users.AnyAsync(u => u.Email == email, cancellationToken);
         }
 
-        public Task<bool> IsPhoneNumberUsedAsync(string phoneNumber, CancellationToken cancellationToken)
+
+        public Task<bool> IsPhoneNumberUsedAsync(string phoneNumber, 
+                                                 CancellationToken cancellationToken)
         {
             return _userManager.Users.AnyAsync(u => u.PhoneNumber == phoneNumber, cancellationToken);
         }
-        public async Task<CreateUserResult> CreateUserAsync(string firstName, string lastName, string email, string phoneNumber, string password)
+
+
+        public async Task<CreateUserResult> CreateUserAsync(string firstName, 
+                                                            string lastName, 
+                                                            string email, 
+                                                            string phoneNumber, 
+                                                            string password)
         {
             var user = new ApplicationUser()
             {
@@ -32,7 +42,8 @@ namespace CleanArchitecture.Infrastructure.Identity.Services
                 LastName = lastName,
                 Email = email,
                 PhoneNumber = phoneNumber,
-                UserName = email
+                UserName = email,
+                CreatedAt = DateTime.UtcNow
             };
 
             var result = await _userManager.CreateAsync(user, password);
@@ -54,11 +65,19 @@ namespace CleanArchitecture.Infrastructure.Identity.Services
             };
         }
 
+        public async Task<bool> IsPhoneUsedByAnotherUserAsync(int userId, 
+                                                              string phoneNumber, 
+                                                              CancellationToken cancellationToken)
+        {
+            return await _userManager.Users
+                .AnyAsync(u => u.Id != userId && u.PhoneNumber == phoneNumber, cancellationToken);
+        }
+
         public async Task<IdentityOperationResult> UpdateUserAsync(int userId,
-                                                            string firstName,
-                                                            string lastName,
-                                                            string phoneNumber,
-                                                            CancellationToken cancellationToken)
+                                                                   string firstName,
+                                                                   string lastName,
+                                                                   string phoneNumber,
+                                                                   CancellationToken cancellationToken)
         {
             var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
 
@@ -74,6 +93,7 @@ namespace CleanArchitecture.Infrastructure.Identity.Services
             user.FirstName = firstName;
             user.LastName = lastName;
             user.PhoneNumber = phoneNumber;
+            user.UpdatedAt = DateTime.UtcNow;
 
             var result = await _userManager.UpdateAsync(user);
 
@@ -93,7 +113,8 @@ namespace CleanArchitecture.Infrastructure.Identity.Services
             };
         }
 
-        public async Task<IdentityOperationResult> DeleteUserAsync(int userId, CancellationToken cancellationToken)
+        public async Task<IdentityOperationResult> DeleteUserAsync(int userId, 
+                                                                   CancellationToken cancellationToken)
         {
             var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
 
@@ -106,7 +127,20 @@ namespace CleanArchitecture.Infrastructure.Identity.Services
                 };
             }
 
-            var result = await _userManager.DeleteAsync(user);
+            if (user.IsDeleted)
+            {
+                return new IdentityOperationResult
+                {
+                    Succeeded = false,
+                    Errors = new List<string>()
+                };
+            }
+
+            user.IsDeleted = true;
+            user.DeletedAt = DateTime.UtcNow;
+            user.IsActive = false;
+
+            var result = await _userManager.UpdateAsync(user);
 
             if (!result.Succeeded)
             {

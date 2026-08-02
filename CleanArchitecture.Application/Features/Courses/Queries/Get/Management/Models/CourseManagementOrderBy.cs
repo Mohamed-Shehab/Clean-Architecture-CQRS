@@ -3,9 +3,13 @@
     public enum CourseManagementOrderBy
     {
         Id,
+
         Name,
+
         Capacity,
+
         EnrolledStudents,
+
         IsActive
     }
 }

@@ -39,18 +39,18 @@ namespace CleanArchitecture.WebApi.Middleware
                 .Select(x => x.PropertyName + ": " + x.ErrorMessage)
                 .ToList();
 
-            var response = ResponseHandler.BadRequest<object>(_localizer[ValidationErrors.ValidationError], errors);
+            var response = ResponseHandler.BadRequest<object>(_localizer[ValidationErrors.ValidationError], errors: errors);
 
-            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            context.Response.StatusCode = response.StatusCode;
 
             await context.Response.WriteAsJsonAsync(response);
         }
 
         private async Task HandleException(HttpContext context)
         {
-            var response = ResponseHandler.BadRequest<object>(_localizer["SomethingWentWrong"]);
+            var response = ResponseHandler.InternalServerError<object>(_localizer["SomethingWentWrong"]);
 
-            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+            context.Response.StatusCode = response.StatusCode;
 
             await context.Response.WriteAsJsonAsync(response);
         }

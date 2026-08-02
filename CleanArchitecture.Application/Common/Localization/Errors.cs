@@ -10,7 +10,10 @@
         public const string Inactive = "Inactive";
         public const string AlreadyUsed = "AlreadyUsed";
         public const string AlreadyExists = "AlreadyExists";
+        public const string NameReservedByDeletedEntity = "NameReservedByDeletedEntity";
         public const string DeletionNotAllowed = "DeletionNotAllowed";
+        public const string ConcurrencyConflict = "ConcurrencyConflict";
+        public const string CapacityLessThanActiveEnrollments = "CapacityLessThanActiveEnrollments";
 
     }
 }

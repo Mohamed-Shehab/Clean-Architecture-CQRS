@@ -28,6 +28,10 @@ namespace CleanArchitecture.Infrastructure.Persistence.Configurations
                    .HasDefaultValue(EnrollmentStatus.Active);
 
 
+            builder.Property(x => x.RowVersion)
+                   .IsRowVersion();
+
+
             // Relationships
             builder.HasOne(e => e.Student)
                    .WithMany(s => s.Enrollments)

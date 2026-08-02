@@ -24,23 +24,14 @@ namespace CleanArchitecture.Infrastructure.Persistence.Repositories
         }
 
 
-        public async Task<bool> HasStudentsAsync(int courseId, 
-                                                 CancellationToken cancellationToken)
+        public async Task<List<Enrollment>> GetStudentActiveEnrollmentsAsync(int studentId, 
+                                                                             CancellationToken cancellationToken)
         {
             return await _context.Enrollments
-                .AnyAsync(e => e.CourseId == courseId && e.Status != EnrollmentStatus.Active, cancellationToken);
-        }
-
-
-        public async Task<bool> HasAvailableSeatAsync(int courseId, 
-                                                      int courseCapacity, 
-                                                      CancellationToken cancellationToken)
-        {
-            var activeStudents = await _context.Enrollments
-            .CountAsync(e => e.CourseId == courseId
-                             && e.Status == EnrollmentStatus.Active, cancellationToken);
-
-            return activeStudents < courseCapacity;
+                .Where(e => e.StudentId == studentId
+                            && e.Status == EnrollmentStatus.Active)
+                .Include(e => e.Course)
+                .ToListAsync(cancellationToken);
         }
 
 
@@ -55,10 +46,10 @@ namespace CleanArchitecture.Infrastructure.Persistence.Repositories
 
 
         public async Task<(List<StudentEnrollmentDto> Data, int TotalCount)> GetStudentEnrollmentsAsync(int studentId,
-                                                                                         StudentEnrollmentFilterModel? filter,
-                                                                                         StudentEnrollmentSortingModel? sorting,
-                                                                                         PaginationModel pagination,
-                                                                                         CancellationToken cancellationToken)
+                                                                                                        StudentEnrollmentFilterModel? filter,
+                                                                                                        StudentEnrollmentSortingModel? sorting,
+                                                                                                        PaginationModel pagination,
+                                                                                                        CancellationToken cancellationToken)
         {
             var query = _context.Enrollments
                 .Where(e => e.StudentId == studentId);
@@ -134,10 +125,10 @@ namespace CleanArchitecture.Infrastructure.Persistence.Repositories
         }
 
         public async Task<(List<CourseEnrollmentDto> Data, int TotalCount)> GetCourseEnrollmentsAsync(int courseId, 
-                                                                                                CourseEnrollmentFilterModel? filter, 
-                                                                                                CourseEnrollmentSortingModel? sorting, 
-                                                                                                PaginationModel pagination, 
-                                                                                                CancellationToken cancellationToken)
+                                                                                                      CourseEnrollmentFilterModel? filter, 
+                                                                                                      CourseEnrollmentSortingModel? sorting, 
+                                                                                                      PaginationModel pagination, 
+                                                                                                      CancellationToken cancellationToken)
         {
             var query = _context.Enrollments
                 .Where(e => e.CourseId == courseId)

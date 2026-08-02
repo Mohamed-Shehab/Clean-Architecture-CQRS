@@ -3,7 +3,9 @@
     public enum StudentEnrollmentOrderBy
     {
         CourseName,
+
         EnrolledAt,
+
         Status
     }
 }

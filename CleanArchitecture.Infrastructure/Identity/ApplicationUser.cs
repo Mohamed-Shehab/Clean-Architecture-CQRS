@@ -19,5 +19,8 @@ namespace CleanArchitecture.Infrastructure.Identity
         public DateTime? DeletedAt { get; set; }
 
         public DateTime? LastLoginAt { get; set; }
+
+
+        public byte[] RowVersion { get; set; } = null!;
     }
 }

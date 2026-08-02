@@ -31,7 +31,11 @@ namespace CleanArchitecture.Application.Features.Enrollments.Queries.GetStudentE
                 .AnyAsync(s => s.Id == request.StudentId, cancellationToken);
 
             if (!isStudentExists)
-                return ResponseHandler.NotFound<List<StudentEnrollmentDto>>(_localizer[Messages.NotFound, _localizer[Entities.Student]]);
+            {
+                return ResponseHandler.NotFound<List<StudentEnrollmentDto>>(
+                    _localizer[Messages.NotFound, _localizer[Entities.Student]],
+                    errorCode: ErrorCodes.Student.NotFound);
+            }
 
 
             // Normalize Pagination

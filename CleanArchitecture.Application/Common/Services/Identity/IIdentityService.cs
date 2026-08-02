@@ -15,6 +15,11 @@ namespace CleanArchitecture.Application.Common.Services.Identity
             string phoneNumber,
             string password);
 
+        Task<bool> IsPhoneUsedByAnotherUserAsync(
+            int userId,
+            string phoneNumber,
+            CancellationToken cancellationToken);
+
         Task<IdentityOperationResult> UpdateUserAsync(int userId, 
             string firstName, 
             string lastName, 

@@ -11,13 +11,13 @@ namespace CleanArchitecture.Application.Common.Interfaces.Repositories
 {
     public interface ICourseRepository : IRepository<Course>
     {
-        Task<int?> GetIdByNameAsync(
+        Task<Course?> GetCourseByNameAsync(
             string nameEn,
             string nameAr,
             CancellationToken cancellationToken);
 
 
-        Task<int?> GetIdByNameAsync(
+        Task<Course?> GetCourseByNameAsync(
             int excludedCourseId,
             string nameEn, 
             string  nameAr, 

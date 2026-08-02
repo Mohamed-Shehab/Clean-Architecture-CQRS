@@ -13,6 +13,8 @@
 
         public int Capacity { get; set; }
 
+        public int ActiveEnrollmentsCount { get; set; }
+
         public bool IsActive { get; set; }
 
         public bool IsDeleted { get; set; }
@@ -22,6 +24,9 @@
         public DateTime? UpdatedAt { get; set; }
 
         public DateTime? DeletedAt { get; set; }
+
+
+        public byte[] RowVersion { get; set; } = null!;
 
 
         // Navigation Property

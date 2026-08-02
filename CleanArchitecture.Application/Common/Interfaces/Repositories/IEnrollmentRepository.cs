@@ -9,15 +9,8 @@ namespace CleanArchitecture.Application.Common.Interfaces.Repositories
 {
     public interface IEnrollmentRepository : IRepository<Enrollment>
     {
-
-        Task<bool> HasStudentsAsync(
-            int courseId, 
-            CancellationToken cancellationToken);
-
-
-        Task<bool> HasAvailableSeatAsync(
-            int courseId, 
-            int courseCapacity, 
+        Task<List<Enrollment>> GetStudentActiveEnrollmentsAsync(
+            int studentId, 
             CancellationToken cancellationToken);
 
 

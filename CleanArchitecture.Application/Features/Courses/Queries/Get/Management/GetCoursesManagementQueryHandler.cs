@@ -25,9 +25,9 @@ namespace CleanArchitecture.Application.Features.Courses.Queries.Get.Management
             request.Pagination.Normalize();
 
             var (courses, totalCount) = await _courseRepository.GetCoursesManagementAsync(request.Filter,
-                                                                                                request.Sorting, 
-                                                                                                request.Pagination, 
-                                                                                                cancellationToken);
+                                                                                                                  request.Sorting, 
+                                                                                                                  request.Pagination, 
+                                                                                                                  cancellationToken);
 
 
             // Success Response

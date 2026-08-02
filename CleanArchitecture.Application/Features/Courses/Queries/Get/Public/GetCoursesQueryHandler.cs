@@ -27,12 +27,11 @@ namespace CleanArchitecture.Application.Features.Courses.Queries.Get.Public
             request.Pagination.Normalize();
 
 
-            var (courses, totalCount) =
-                await _courseRepository.GetCoursesAsync(
-                    request.Filter,
-                    request.Sorting,
-                    request.Pagination,
-                    cancellationToken);
+            var (courses, totalCount) = await _courseRepository.GetCoursesAsync(
+                request.Filter,
+                request.Sorting,
+                request.Pagination,
+                cancellationToken);
 
 
             return ResponseHandler.SuccessPaged(

@@ -27,10 +27,15 @@ namespace CleanArchitecture.Application.Features.Courses.Queries.GetById.Managem
             var course = await _courseRepository.GetCourseManagementByIdAsync(request.Id, cancellationToken);
 
             if (course == null)
-                return ResponseHandler.NotFound<CourseManagementDetailsDto>(_localizer[Messages.NotFound, _localizer[Entities.Course]]);
+            {
+                return ResponseHandler.NotFound<CourseManagementDetailsDto>(
+                    _localizer[Messages.NotFound, _localizer[Entities.Course]],
+                    errorCode: ErrorCodes.Course.NotFound);
+            }
 
 
-            return ResponseHandler.Success(course, 
+            return ResponseHandler.Success(
+                course, 
                 _localizer[Messages.RetrievedSuccessfully, _localizer[Entities.Course]]);
         }
     }

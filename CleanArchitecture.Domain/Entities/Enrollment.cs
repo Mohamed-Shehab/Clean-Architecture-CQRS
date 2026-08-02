@@ -19,6 +19,9 @@ namespace CleanArchitecture.Domain.Entities
         public EnrollmentStatus Status { get; set; } = EnrollmentStatus.Active;
 
 
+        public byte[] RowVersion { get; set; } = null!;
+
+
         // Navigation Properties
         public virtual Student Student { get; set; } = null!;
 

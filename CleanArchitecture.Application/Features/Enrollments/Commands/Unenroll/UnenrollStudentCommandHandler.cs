@@ -5,6 +5,7 @@ using CleanArchitecture.Application.Common.Localization.Resources;
 using CleanArchitecture.Application.Common.Responses;
 using CleanArchitecture.Domain.Enums;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 
 namespace CleanArchitecture.Application.Features.Enrollments.Commands.Unenroll
@@ -33,11 +34,14 @@ namespace CleanArchitecture.Application.Features.Enrollments.Commands.Unenroll
         public async Task<Response<object>> Handle(UnenrollStudentCommand request, CancellationToken cancellationToken)
         {
             // Check Is Course Exists
-            var courseExists = await _courseRepository
-                .AnyAsync(c => c.Id == request.CourseId, cancellationToken);
+            var course = await _courseRepository.GetByIdAsync(request.CourseId, cancellationToken);
 
-            if (!courseExists)
-                return ResponseHandler.NotFound<object>(_localizer[Messages.NotFound, _localizer[Entities.Course]]);
+            if (course == null)
+            {
+                return ResponseHandler.NotFound<object>(
+                    _localizer[Messages.NotFound, _localizer[Entities.Course]],
+                    errorCode: ErrorCodes.Course.NotFound);
+            }
 
 
             // Check Is Student Exists
@@ -45,33 +49,68 @@ namespace CleanArchitecture.Application.Features.Enrollments.Commands.Unenroll
                 .AnyAsync(s => s.Id == request.StudentId, cancellationToken);
 
             if (!studentExists)
-                return ResponseHandler.NotFound<object>(_localizer[Messages.NotFound, _localizer[Entities.Student]]);
+            {
+                return ResponseHandler.NotFound<object>(
+                    _localizer[Messages.NotFound, _localizer[Entities.Student]],
+                    errorCode: ErrorCodes.Student.NotFound);
+            }
 
 
             // Check Is Student Enrolled in the Course
             var enrollment = await _enrollmentRepository.GetEnrollmentAsync(request.StudentId, request.CourseId, cancellationToken);
-                
+
             if (enrollment == null)
-                return ResponseHandler.Conflict<object>(_localizer[Errors.NotEnrolled, _localizer[Entities.Student], _localizer[Entities.Course]]);
+            {
+                return ResponseHandler.Conflict<object>(
+                    _localizer[Errors.NotEnrolled, _localizer[Entities.Student], _localizer[Entities.Course]],
+                    errorCode: ErrorCodes.Enrollment.NotEnrolled);
+            }
+
 
             switch (enrollment.Status)
             {
                 case EnrollmentStatus.Dropped:
 
-                    return ResponseHandler.Conflict<object>(_localizer[Errors.NotEnrolled, _localizer[Entities.Student], _localizer[Entities.Course]]);
+                    return ResponseHandler.Conflict<object>(
+                        _localizer[Errors.NotEnrolled, _localizer[Entities.Student], _localizer[Entities.Course]],
+                        errorCode: ErrorCodes.Enrollment.NotEnrolled);
 
                 case EnrollmentStatus.Completed:
 
-                    return ResponseHandler.Conflict<object>(_localizer[Errors.AlreadyCompleted, _localizer[Entities.Student], _localizer[Entities.Course]]);
+                    return ResponseHandler.Conflict<object>(
+                        _localizer[Errors.AlreadyCompleted, _localizer[Entities.Student], _localizer[Entities.Course]],
+                        errorCode: ErrorCodes.Enrollment.AlreadyCompleted);
             }
 
 
             // Mark enrollment as dropped
-            enrollment.Status = EnrollmentStatus.Dropped; //_enrollmentRepository.Delete(enrollment);
-
+            enrollment.Status = EnrollmentStatus.Dropped;
             enrollment.DroppedAt = DateTime.UtcNow;
 
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            course.ActiveEnrollmentsCount = Math.Max(0, course.ActiveEnrollmentsCount - 1);
+
+            try
+            {
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                var courseStillExists = await _courseRepository.AnyAsync(
+                    c => c.Id == request.CourseId,
+                    cancellationToken);
+
+                if (!courseStillExists)
+                {
+                    return ResponseHandler.NotFound<object>(
+                        _localizer[Messages.NotFound, _localizer[Entities.Course]],
+                        errorCode: ErrorCodes.Course.NotFound);
+                }
+
+
+                return ResponseHandler.Conflict<object>(
+                    _localizer[Errors.ConcurrencyConflict],
+                    errorCode: ErrorCodes.Common.ConcurrencyConflict);
+            }
 
 
             return ResponseHandler.Success<object>(message: _localizer[Messages.UnenrolledSuccessfully, _localizer[Entities.Student]]);

@@ -1,5 +1,6 @@
 ﻿using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Interfaces.Repositories;
+using CleanArchitecture.Application.Common.Services.DatabaseException;
 using CleanArchitecture.Application.Common.Services.Identity;
 using CleanArchitecture.Application.Common.Services.Localization;
 using CleanArchitecture.Infrastructure.Identity;
@@ -7,6 +8,7 @@ using CleanArchitecture.Infrastructure.Identity.Services;
 using CleanArchitecture.Infrastructure.Localization;
 using CleanArchitecture.Infrastructure.Persistence.Context;
 using CleanArchitecture.Infrastructure.Persistence.Repositories;
+using CleanArchitecture.Infrastructure.Persistence.Services;
 using CleanArchitecture.Infrastructure.Persistence.UnitOfWork;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -64,6 +66,10 @@ namespace CleanArchitecture.Infrastructure
 
             // Registration of Unit Of Work
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+
+            // Registration of Database Exception Service
+            services.AddScoped<IDatabaseExceptionService, SqlServerDatabaseExceptionService>();
 
 
             return services;

@@ -38,38 +38,59 @@ namespace CleanArchitecture.Application.Features.Students.Commands.Create
             var isEmailUsed = await _identityService.IsEmailUsedAsync(request.Email, cancellationToken);
 
             if(isEmailUsed)
-                return ResponseHandler.Conflict<int>(_localizer[Errors.AlreadyUsed, Fields.Email]);
+            {
+                return ResponseHandler.Conflict<int>(
+                    _localizer[Errors.AlreadyUsed, _localizer[Fields.Email]],
+                    errorCode: ErrorCodes.Student.EmailAlreadyUsed);
+            }
 
 
             // Check if a user with the same phone number already exists
             var isPhoneNumberUsed = await _identityService.IsPhoneNumberUsedAsync(request.PhoneNumber, cancellationToken);
 
             if(isPhoneNumberUsed)
-                return ResponseHandler.Conflict<int>(_localizer[Errors.AlreadyUsed, Fields.PhoneNumber]);
+            {
+                return ResponseHandler.Conflict<int>(
+                    _localizer[Errors.AlreadyUsed, _localizer[Fields.PhoneNumber]],
+                    errorCode: ErrorCodes.Student.PhoneAlreadyUsed);
+            }
 
 
-            // Add new user to the identity system
-            var createUserResult = await _identityService.CreateUserAsync(request.FirstName,
-                                                                   request.LastName,
-                                                                   request.Email,
-                                                                   request.PhoneNumber,
-                                                                   request.Password);
 
-            if (!createUserResult.Succeeded)
-                return ResponseHandler.Conflict<int>(_localizer[Messages.CreationFailed, _localizer[Entities.User]], errors: createUserResult.Errors);
+            return await _unitOfWork.ExecuteInTransactionAsync(async () =>
+            {
+                // Create Identity User
+                var createUserResult = await _identityService.CreateUserAsync(request.FirstName,
+                                                                                            request.LastName,
+                                                                                            request.Email,
+                                                                                            request.PhoneNumber,
+                                                                                            request.Password);
 
-
-            // Map the request to a Student entity and set the UserId
-            var student = _mapper.Map<Student>(request);
-            student.UserId = createUserResult.UserId;
-
-
-            await _studentRepository.AddAsync(student, cancellationToken);
-
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+                if (!createUserResult.Succeeded)
+                {
+                    return ResponseHandler.Conflict<int>(
+                        _localizer[Messages.CreationFailed, _localizer[Entities.User]],
+                        errorCode: ErrorCodes.Identity.UserCreationFailed,
+                        errors: createUserResult.Errors);
+                }
 
 
-            return ResponseHandler.Created(student.Id, _localizer[Messages.CreatedSuccessfully, _localizer[Entities.Student]]);
+                // Create Student
+                var student = _mapper.Map<Student>(request);
+                student.UserId = createUserResult.UserId;
+
+
+                await _studentRepository.AddAsync(student, cancellationToken);
+
+
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+
+                return ResponseHandler.Created(student.Id, _localizer[Messages.CreatedSuccessfully, _localizer[Entities.Student]]);
+            }, 
+            cancellationToken: cancellationToken);
+
+
         }
     }
 }

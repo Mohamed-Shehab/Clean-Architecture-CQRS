@@ -3,6 +3,7 @@ using CleanArchitecture.Infrastructure;
 using CleanArchitecture.WebApi.Middleware;
 using Swashbuckle.AspNetCore.Filters;
 using System.Reflection;
+using System.Text.Json.Serialization;
 
 namespace CleanArchitecture.WebApi
 {
@@ -14,7 +15,12 @@ namespace CleanArchitecture.WebApi
 
 
             // Add services to the container.
-            builder.Services.AddControllers();
+            builder.Services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.DefaultIgnoreCondition =
+                        JsonIgnoreCondition.WhenWritingNull;
+                });
 
 
             // Swagger

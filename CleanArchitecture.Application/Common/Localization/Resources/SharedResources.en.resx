@@ -267,4 +267,16 @@
   <data name="CompletedSuccessfully" xml:space="preserve">
     <value>{0} completed this {1} successfully</value>
   </data>
+  <data name="RestoredSuccessfully" xml:space="preserve">
+    <value>{0} restored successfully</value>
+  </data>
+  <data name="NameReservedByDeletedEntity" xml:space="preserve">
+    <value>A deleted {0} already uses this name</value>
+  </data>
+  <data name="ConcurrencyConflict" xml:space="preserve">
+    <value>The data has been modified by another user. Please refresh and try again</value>
+  </data>
+  <data name="CapacityLessThanActiveEnrollments" xml:space="preserve">
+    <value>Course capacity cannot be less than the number of currently enrolled students.</value>
+  </data>
 </root>
