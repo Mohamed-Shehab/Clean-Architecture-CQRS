@@ -3,13 +3,14 @@ using CleanArchitecture.Application.Common.Localization.Resources;
 using FluentValidation;
 using Microsoft.Extensions.Localization;
 
-namespace CleanArchitecture.Application.Features.Students.Commands.Create
+namespace CleanArchitecture.Application.Features.Authentication.Commands.Register
 {
-    public class CreateStudentCommandValidator : AbstractValidator<CreateStudentCommand>
+    public sealed class RegisterCommandValidator : AbstractValidator<RegisterCommand>
     {
         private readonly IStringLocalizer<SharedResources> _localizer;
 
-        public CreateStudentCommandValidator(IStringLocalizer<SharedResources> localizer)
+
+        public RegisterCommandValidator(IStringLocalizer<SharedResources> localizer)
         {
             this._localizer = localizer;
 
@@ -21,6 +22,7 @@ namespace CleanArchitecture.Application.Features.Students.Commands.Create
             ValidateDateOfBirth();
             ValidateAddress();
         }
+
 
         private void ValidateFirstName()
         {
@@ -67,7 +69,7 @@ namespace CleanArchitecture.Application.Features.Students.Commands.Create
                .NotEmpty().WithMessage(_localizer[ValidationErrors.Required, _localizer[Fields.Password]]);
 
             RuleFor(x => x.Password)
-                .MinimumLength(6).WithMessage(_localizer[ValidationErrors.MinLength, _localizer[Fields.Password], 6])
+                .MinimumLength(8).WithMessage(_localizer[ValidationErrors.MinLength, _localizer[Fields.Password], 8])
                 .When(x => !string.IsNullOrEmpty(x.Password));
         }
 

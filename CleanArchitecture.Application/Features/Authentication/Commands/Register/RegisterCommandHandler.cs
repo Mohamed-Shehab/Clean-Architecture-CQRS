@@ -9,9 +9,9 @@ using CleanArchitecture.Domain.Entities;
 using MediatR;
 using Microsoft.Extensions.Localization;
 
-namespace CleanArchitecture.Application.Features.Students.Commands.Create
+namespace CleanArchitecture.Application.Features.Authentication.Commands.Register
 {
-    public sealed class CreateStudentCommandHandler : IRequestHandler<CreateStudentCommand, Response<int>>
+    public sealed class RegisterCommandHandler : IRequestHandler<RegisterCommand, Response<object>>
     {
         private readonly IIdentityService _identityService;
         private readonly IStudentRepository _studentRepository;
@@ -19,11 +19,12 @@ namespace CleanArchitecture.Application.Features.Students.Commands.Create
         private readonly IMapper _mapper;
         private readonly IStringLocalizer<SharedResources> _localizer;
 
-        public CreateStudentCommandHandler(IIdentityService identityService,
-                                           IStudentRepository studentRepository,
-                                           IUnitOfWork unitOfWork,
-                                           IMapper mapper,
-                                           IStringLocalizer<SharedResources> localizer)
+
+        public RegisterCommandHandler(IIdentityService identityService,
+                                      IStudentRepository studentRepository,
+                                      IUnitOfWork unitOfWork,
+                                      IMapper mapper,
+                                      IStringLocalizer<SharedResources> localizer)
         {
             this._identityService = identityService;
             this._studentRepository = studentRepository;
@@ -32,14 +33,15 @@ namespace CleanArchitecture.Application.Features.Students.Commands.Create
             this._localizer = localizer;
         }
 
-        public async Task<Response<int>> Handle(CreateStudentCommand request, CancellationToken cancellationToken)
+
+        public async Task<Response<object>> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
             // Check if a user with the same email already exists
             var isEmailUsed = await _identityService.IsEmailUsedAsync(request.Email, cancellationToken);
 
-            if(isEmailUsed)
+            if (isEmailUsed)
             {
-                return ResponseHandler.Conflict<int>(
+                return ResponseHandler.Conflict<object>(
                     _localizer[Errors.AlreadyUsed, _localizer[Fields.Email]],
                     errorCode: ErrorCodes.Student.EmailAlreadyUsed);
             }
@@ -48,9 +50,9 @@ namespace CleanArchitecture.Application.Features.Students.Commands.Create
             // Check if a user with the same phone number already exists
             var isPhoneNumberUsed = await _identityService.IsPhoneNumberUsedAsync(request.PhoneNumber, cancellationToken);
 
-            if(isPhoneNumberUsed)
+            if (isPhoneNumberUsed)
             {
-                return ResponseHandler.Conflict<int>(
+                return ResponseHandler.Conflict<object>(
                     _localizer[Errors.AlreadyUsed, _localizer[Fields.PhoneNumber]],
                     errorCode: ErrorCodes.Student.PhoneAlreadyUsed);
             }
@@ -68,7 +70,7 @@ namespace CleanArchitecture.Application.Features.Students.Commands.Create
 
                 if (!createUserResult.Succeeded)
                 {
-                    return ResponseHandler.Conflict<int>(
+                    return ResponseHandler.Conflict<object>(
                         _localizer[Messages.CreationFailed, _localizer[Entities.User]],
                         errorCode: ErrorCodes.Identity.UserCreationFailed,
                         errors: createUserResult.Errors);
@@ -86,11 +88,9 @@ namespace CleanArchitecture.Application.Features.Students.Commands.Create
                 await _unitOfWork.SaveChangesAsync(cancellationToken);
 
 
-                return ResponseHandler.Created(student.Id, _localizer[Messages.CreatedSuccessfully, _localizer[Entities.Student]]);
-            }, 
+                return ResponseHandler.Created<object>(message: _localizer[Messages.CreatedSuccessfully, _localizer[Entities.Student]]);
+            },
             cancellationToken: cancellationToken);
-
-
         }
     }
 }

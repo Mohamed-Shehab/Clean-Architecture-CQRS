@@ -8,6 +8,9 @@
         public const string Email = "Email";
         public const string PhoneNumber = "PhoneNumber";
         public const string Password = "Password";
+        public const string CurrentPassword = "CurrentPassword";
+        public const string NewPassword = "NewPassword";
+        public const string ConfirmNewPassword = "ConfirmNewPassword";
         public const string DateOfBirth = "DateOfBirth";
         public const string Address = "Address";
 

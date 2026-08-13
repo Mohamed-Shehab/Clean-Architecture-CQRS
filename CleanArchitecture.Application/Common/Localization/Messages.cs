@@ -15,5 +15,14 @@
         public const string UnenrolledSuccessfully = "UnenrolledSuccessfully";
         public const string CompletedSuccessfully = "CompletedSuccessfully";
         public const string NoCoursesForStudent = "NoCoursesForStudent";
+
+        public const string LoginSuccessfully = "LoginSuccessfully";
+
+        public const string PasswordChangedSuccessfully = "PasswordChangedSuccessfully";
+        public const string PasswordChangeFailed = "PasswordChangeFailed";
+
+        public const string EmailChangedSuccessfully = "EmailChangedSuccessfully";
+        public const string ChangeEmailFailed = "ChangeEmailFailed";
+
     }
 }

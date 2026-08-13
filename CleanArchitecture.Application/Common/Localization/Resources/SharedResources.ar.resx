@@ -135,9 +135,6 @@
   <data name="AlreadyUsed" xml:space="preserve">
     <value>هذا {0} مستخدم بالفعل</value>
   </data>
-  <data name="Unauthorized" xml:space="preserve">
-    <value>غير مصرح</value>
-  </data>
   <data name="Student" xml:space="preserve">
     <value>الطالب</value>
   </data>
@@ -278,5 +275,47 @@
   </data>
   <data name="CapacityLessThanActiveEnrollments" xml:space="preserve">
     <value>لا يمكن أن تكون سعة الكورس أقل من عدد الطلاب المسجلين حاليًا.</value>
+  </data>
+  <data name="InvalidCredentials" xml:space="preserve">
+    <value>البريد الإلكتروني أو كلمة المرور غير صحيحة</value>
+  </data>
+  <data name="EmailNotConfirmed" xml:space="preserve">
+    <value>لم يتم تأكيد عنوان البريد الإلكتروني الخاص بك</value>
+  </data>
+  <data name="AccountInactive" xml:space="preserve">
+    <value>حسابك غير نشط</value>
+  </data>
+  <data name="AccountLocked" xml:space="preserve">
+    <value>حسابك مقفل مؤقتًا</value>
+  </data>
+  <data name="LoginSuccessfully" xml:space="preserve">
+    <value>تم تسجيل الدخول بنجاح</value>
+  </data>
+  <data name="CurrentPassword" xml:space="preserve">
+    <value>كلمة المرور الحالية</value>
+  </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>كلمة المرور الجديدة</value>
+  </data>
+  <data name="ConfirmNewPassword" xml:space="preserve">
+    <value>تأكيد كلمة المرور الجديدة</value>
+  </data>
+  <data name="PasswordsDoNotMatch" xml:space="preserve">
+    <value>كلمتا المرور غير متطابقتين</value>
+  </data>
+  <data name="PasswordChangedSuccessfully" xml:space="preserve">
+    <value>تم تغيير كلمة المرور بنجاح</value>
+  </data>
+  <data name="PasswordChangeFailed" xml:space="preserve">
+    <value>فشل تغيير كلمة المرور</value>
+  </data>
+  <data name="EmailChangedSuccessfully" xml:space="preserve">
+    <value>تم تغيير عنوان البريد الإلكتروني بنجاح</value>
+  </data>
+  <data name="ChangeEmailFailed" xml:space="preserve">
+    <value>فشل تغيير عنوان البريد الإلكتروني</value>
+  </data>
+  <data name="InvalidPassword" xml:space="preserve">
+    <value>كلمة المرور غير صحيحة</value>
   </data>
 </root>

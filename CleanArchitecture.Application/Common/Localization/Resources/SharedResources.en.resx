@@ -135,9 +135,6 @@
   <data name="AlreadyUsed" xml:space="preserve">
     <value>This {0} already used</value>
   </data>
-  <data name="Unauthorized" xml:space="preserve">
-    <value>Unauthorized access</value>
-  </data>
   <data name="Student" xml:space="preserve">
     <value>Student</value>
   </data>
@@ -278,5 +275,47 @@
   </data>
   <data name="CapacityLessThanActiveEnrollments" xml:space="preserve">
     <value>Course capacity cannot be less than the number of currently enrolled students.</value>
+  </data>
+  <data name="InvalidCredentials" xml:space="preserve">
+    <value>The email or password is incorrect</value>
+  </data>
+  <data name="EmailNotConfirmed" xml:space="preserve">
+    <value>Your email address has not been confirmed</value>
+  </data>
+  <data name="AccountInactive" xml:space="preserve">
+    <value>Your account is inactive</value>
+  </data>
+  <data name="AccountLocked" xml:space="preserve">
+    <value>Your account is temporarily locked</value>
+  </data>
+  <data name="LoginSuccessfully" xml:space="preserve">
+    <value>Login completed successfully</value>
+  </data>
+  <data name="CurrentPassword" xml:space="preserve">
+    <value>Current password</value>
+  </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>New password</value>
+  </data>
+  <data name="ConfirmNewPassword" xml:space="preserve">
+    <value>Confirm new password</value>
+  </data>
+  <data name="PasswordsDoNotMatch" xml:space="preserve">
+    <value>The passwords do not match</value>
+  </data>
+  <data name="PasswordChangedSuccessfully" xml:space="preserve">
+    <value>Password changed successfully</value>
+  </data>
+  <data name="PasswordChangeFailed" xml:space="preserve">
+    <value>Failed to change password</value>
+  </data>
+  <data name="EmailChangedSuccessfully" xml:space="preserve">
+    <value>Email address changed successfully</value>
+  </data>
+  <data name="ChangeEmailFailed" xml:space="preserve">
+    <value>Failed to change the email address</value>
+  </data>
+  <data name="InvalidPassword" xml:space="preserve">
+    <value>The password is incorrect</value>
   </data>
 </root>

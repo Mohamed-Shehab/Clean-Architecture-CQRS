@@ -11,5 +11,6 @@
         public const string GreaterThan = "GreaterThan";
         public const string InvalidEmail = "InvalidEmail";
         public const string InvalidValue = "InvalidValue";
+        public const string PasswordsDoNotMatch = "PasswordsDoNotMatch";
     }
 }
