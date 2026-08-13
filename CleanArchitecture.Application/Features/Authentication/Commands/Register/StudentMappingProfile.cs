@@ -2,13 +2,13 @@
 using CleanArchitecture.Domain.Entities;
 
 
-namespace CleanArchitecture.Application.Features.Students.Commands.Create
+namespace CleanArchitecture.Application.Features.Authentication.Commands.Register
 {
     public class StudentMappingProfile : Profile
     {
         public StudentMappingProfile()
         {
-            CreateMap<CreateStudentCommand, Student>();
+            CreateMap<RegisterCommand, Student>();
         }
     }
 }

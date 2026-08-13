@@ -70,10 +70,14 @@ namespace CleanArchitecture.WebApi
 
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
-
             // Localization Middleware
             app.UseRequestLocalization(localizationOptions);
+
+
+            app.UseAuthentication();
+
+            app.UseAuthorization();
+
 
             // Global Exception Middleware
             app.UseMiddleware<GlobalExceptionMiddleware>();

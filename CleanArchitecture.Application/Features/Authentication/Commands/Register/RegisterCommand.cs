@@ -1,15 +1,14 @@
 ﻿using CleanArchitecture.Application.Common.Responses;
 using MediatR;
 
-namespace CleanArchitecture.Application.Features.Students.Commands.Create
+namespace CleanArchitecture.Application.Features.Authentication.Commands.Register
 {
-    public sealed record CreateStudentCommand(
+    public sealed record RegisterCommand(
         string FirstName,
         string LastName,
         string Email,
         string PhoneNumber,
         string Password,
         DateOnly DateOfBirth,
-        string? Address
-    ) : IRequest<Response<int>>;
+        string? Address) : IRequest<Response<object>>;
 }

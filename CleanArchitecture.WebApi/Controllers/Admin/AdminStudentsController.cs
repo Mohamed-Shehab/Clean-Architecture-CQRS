@@ -2,7 +2,6 @@
 using CleanArchitecture.Application.Common.Responses;
 using CleanArchitecture.Application.Features.Enrollments.Queries.GetStudentEnrollments;
 using CleanArchitecture.Application.Features.Enrollments.Queries.GetStudentEnrollments.Models;
-using CleanArchitecture.Application.Features.Students.Commands.Create;
 using CleanArchitecture.Application.Features.Students.Commands.Delete;
 using CleanArchitecture.Application.Features.Students.Commands.Update;
 using CleanArchitecture.Application.Features.Students.Queries.Get;
@@ -108,55 +107,6 @@ namespace CleanArchitecture.WebApi.Controllers.Admin
                                                         CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(new GetStudentByIdQuery(id), cancellationToken);
-
-
-            return HandleResponse(response);
-        }
-        #endregion
-
-
-        #region Create Student
-        /// <summary>
-        /// Creates a new student.
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// Validation Rules:
-        ///
-        /// - Email address must be unique.
-        /// - Phone number must be unique.
-        /// </remarks>
-        /// 
-        /// <param name="command">
-        /// Student information.
-        /// </param>
-        /// 
-        /// <returns>
-        /// Returns the created student's identifier.
-        /// </returns>
-        /// 
-        /// <response code="201">
-        /// Student created successfully.
-        /// </response>
-        /// <response code="400">
-        /// Validation failed.
-        /// </response>
-        /// <response code="409">
-        /// The email/phone number is already in use.
-        /// </response>
-        
-        [HttpPost]
-        [SwaggerRequestExample(typeof(CreateStudentCommand), typeof(CreateStudentCommandExample))]
-        [ProducesResponseType<Response<int>>(StatusCodes.Status201Created)]
-        [ProducesResponseType<Response<object>>(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType<Response<object>>(StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> CreateStudent(CreateStudentCommand command,
-                                                       CancellationToken cancellationToken)
-        {
-            var response = await _mediator.Send(command, cancellationToken);
-
-            if (response.Succeeded)
-                return CreatedAtAction(nameof(GetStudentById), new { id = response.Data }, response);
 
 
             return HandleResponse(response);

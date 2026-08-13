@@ -10,7 +10,7 @@ namespace CleanArchitecture.Application.Common.Responses
         {
             return new Response<T>
             {
-                StatusCode = 200,
+                StatusCode = StatusCodes.Status200OK,
                 Succeeded = true,
                 Data = data,
                 Message = message
@@ -24,7 +24,7 @@ namespace CleanArchitecture.Application.Common.Responses
         {
             return new Response<T>
             {
-                StatusCode = 200,
+                StatusCode = StatusCodes.Status200OK,
                 Succeeded = true,
                 Data = data,
                 Message = message,
@@ -37,24 +37,14 @@ namespace CleanArchitecture.Application.Common.Responses
             };
         }
 
-        public static Response<T> Created<T>(T data, 
+        public static Response<T> Created<T>(T? data = default, 
                                              string message = "Created")
         {
             return new Response<T>
             {
-                StatusCode = 201,
+                StatusCode = StatusCodes.Status201Created,
                 Succeeded = true,
                 Data = data,
-                Message = message
-            };
-        }
-
-        public static Response<T> NoContent<T>(string message = "No Content")
-        {
-            return new Response<T>
-            {
-                StatusCode = 204,
-                Succeeded = true,
                 Message = message
             };
         }
@@ -64,7 +54,7 @@ namespace CleanArchitecture.Application.Common.Responses
         {
             return new Response<T>
             {
-                StatusCode = 404,
+                StatusCode = StatusCodes.Status404NotFound,
                 Succeeded = false,
                 Message = message,
                 ErrorCode = errorCode
@@ -78,7 +68,7 @@ namespace CleanArchitecture.Application.Common.Responses
         {
             return new Response<T>
             {
-                StatusCode = 400,
+                StatusCode = StatusCodes.Status400BadRequest,
                 Succeeded = false,
                 Message = message,
                 ErrorCode = errorCode,
@@ -100,6 +90,18 @@ namespace CleanArchitecture.Application.Common.Responses
                 Data = data,
                 ErrorCode = errorCode,
                 Errors = errors
+            };
+        }
+
+        public static Response<T> Unauthorized<T>(string message = "Unauthorized",
+                                                  string? errorCode = null)
+        {
+            return new Response<T>
+            {
+                Succeeded = false,
+                StatusCode = StatusCodes.Status401Unauthorized,
+                Message = message,
+                ErrorCode = errorCode
             };
         }
 

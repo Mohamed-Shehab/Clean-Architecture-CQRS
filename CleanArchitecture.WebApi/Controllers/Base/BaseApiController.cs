@@ -1,6 +1,7 @@
 ﻿using CleanArchitecture.Application.Common.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace CleanArchitecture.WebApi.Controllers.Base
 {
@@ -11,10 +12,12 @@ namespace CleanArchitecture.WebApi.Controllers.Base
     {
         protected readonly IMediator _mediator;
 
+
         protected BaseApiController(IMediator mediator)
         {
             _mediator = mediator;
         }
+
 
         protected IActionResult HandleResponse<T>(Response<T> response)
         {

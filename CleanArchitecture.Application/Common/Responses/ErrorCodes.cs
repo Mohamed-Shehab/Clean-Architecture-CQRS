@@ -50,6 +50,32 @@
         }
 
 
+        public static class Authentication
+        {
+            public const string InvalidCredentials = "AUTH_INVALID_CREDENTIALS";
+
+            public const string EmailNotConfirmed = "AUTH_EMAIL_NOT_CONFIRMED";
+
+            public const string AccountInactive = "AUTH_ACCOUNT_INACTIVE";
+
+            public const string AccountLocked = "AUTH_ACCOUNT_LOCKED";
+        }
+
+
+        public static class Account
+        {
+            public const string PasswordChangeFailed = "ACCOUNT_PASSWORD_CHANGE_FAILED";
+
+            public const string EmailAlreadyUsed = "ACCOUNT_EMAIL_ALREADY_USED";
+
+            public const string InvalidCurrentPassword = "ACCOUNT_INVALID_CURRENT_PASSWORD";
+
+            public const string AccountLocked = "ACCOUNT_LOCKED";
+            
+            public const string ChangeEmailFailed = "ACCOUNT_CHANGE_EMAIL_FAILED";
+        }
+
+
         public static class Common
         {
             public const string ConcurrencyConflict = "CONCURRENCY_CONFLICT";
