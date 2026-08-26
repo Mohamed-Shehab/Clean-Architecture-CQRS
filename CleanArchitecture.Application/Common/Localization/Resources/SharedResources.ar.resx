@@ -318,4 +318,19 @@
   <data name="InvalidPassword" xml:space="preserve">
     <value>كلمة المرور غير صحيحة</value>
   </data>
+  <data name="RefreshToken" xml:space="preserve">
+    <value>رمز التحديث</value>
+  </data>
+  <data name="InvalidRefreshToken" xml:space="preserve">
+    <value>رمز التحديث غير صالح</value>
+  </data>
+  <data name="RefreshTokenRevoked" xml:space="preserve">
+    <value>تم إلغاء صلاحية رمز التحديث</value>
+  </data>
+  <data name="RefreshTokenExpired" xml:space="preserve">
+    <value>انتهت صلاحية رمز التحديث</value>
+  </data>
+  <data name="TokenRefreshedSuccessfully" xml:space="preserve">
+    <value>تم تحديث رموز المصادقة بنجاح</value>
+  </data>
 </root>

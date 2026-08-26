@@ -1,5 +1,5 @@
 ﻿using CleanArchitecture.Application.Common.Services.Authentication;
-using CleanArchitecture.Infrastructure.Authentication.Configuration;
+using CleanArchitecture.Infrastructure.Authentication.Configurations;
 using CleanArchitecture.Infrastructure.Authentication.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
@@ -62,6 +62,18 @@ namespace CleanArchitecture.Infrastructure.Authentication
                         ClockSkew = TimeSpan.Zero
                     };
                 });
+
+
+            // Register RefreshToken Options Configuration and Validation
+            services.ConfigureOptions<RefreshTokenOptionsSetup>();
+
+            services
+                .AddOptions<RefreshTokenOptions>()
+                .ValidateOnStart();
+
+
+            // Register RefreshTokenService
+            services.AddScoped<IRefreshTokenService, RefreshTokenService>();
 
 
             return services;

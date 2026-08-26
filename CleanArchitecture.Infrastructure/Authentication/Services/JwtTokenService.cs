@@ -1,6 +1,6 @@
 ﻿using CleanArchitecture.Application.Common.Services.Authentication;
 using CleanArchitecture.Application.Common.Services.Authentication.Models;
-using CleanArchitecture.Infrastructure.Authentication.Configuration;
+using CleanArchitecture.Infrastructure.Authentication.Configurations;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;

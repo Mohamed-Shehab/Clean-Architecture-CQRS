@@ -16,13 +16,14 @@ namespace CleanArchitecture.Infrastructure.Persistence.Context
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
-
             base.OnModelCreating(builder);
+
+            builder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
         }
 
         public DbSet<Student> Students { get; set; }
         public DbSet<Course>  Courses { get; set; }
         public DbSet<Enrollment> Enrollments { get; set; }
+        public DbSet<UserSession> UserSessions { get; set; }
     }
 }

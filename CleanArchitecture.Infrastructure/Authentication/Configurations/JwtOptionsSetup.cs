@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
-namespace CleanArchitecture.Infrastructure.Authentication.Configuration
+namespace CleanArchitecture.Infrastructure.Authentication.Configurations
 {
     public sealed class JwtOptionsSetup :
         IConfigureOptions<JwtOptions>,
