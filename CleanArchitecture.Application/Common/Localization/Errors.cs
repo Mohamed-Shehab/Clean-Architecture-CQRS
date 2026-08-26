@@ -21,5 +21,8 @@
         public const string DeletionNotAllowed = "DeletionNotAllowed";
         public const string ConcurrencyConflict = "ConcurrencyConflict";
 
+        public const string InvalidRefreshToken = "InvalidRefreshToken";
+        public const string RefreshTokenRevoked = "RefreshTokenRevoked";
+        public const string RefreshTokenExpired = "RefreshTokenExpired";
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace CleanArchitecture.Infrastructure.Authentication.Configuration
+﻿namespace CleanArchitecture.Infrastructure.Authentication.Configurations
 {
     public sealed class JwtOptions
     {

@@ -318,4 +318,19 @@
   <data name="InvalidPassword" xml:space="preserve">
     <value>The password is incorrect</value>
   </data>
+  <data name="RefreshToken" xml:space="preserve">
+    <value>Refresh token</value>
+  </data>
+  <data name="InvalidRefreshToken" xml:space="preserve">
+    <value>The refresh token is invalid</value>
+  </data>
+  <data name="RefreshTokenRevoked" xml:space="preserve">
+    <value>The refresh token has been revoked</value>
+  </data>
+  <data name="RefreshTokenExpired" xml:space="preserve">
+    <value>The refresh token has expired</value>
+  </data>
+  <data name="TokenRefreshedSuccessfully" xml:space="preserve">
+    <value>Authentication tokens refreshed successfully</value>
+  </data>
 </root>

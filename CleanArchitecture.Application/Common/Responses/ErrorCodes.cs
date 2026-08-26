@@ -59,6 +59,12 @@
             public const string AccountInactive = "AUTH_ACCOUNT_INACTIVE";
 
             public const string AccountLocked = "AUTH_ACCOUNT_LOCKED";
+
+            public const string InvalidRefreshToken = "AUTH_INVALID_REFRESH_TOKEN";
+
+            public const string RefreshTokenRevoked = "AUTH_REFRESH_TOKEN_REVOKED";
+
+            public const string RefreshTokenExpired = "AUTH_REFRESH_TOKEN_EXPIRED";
         }
 
 

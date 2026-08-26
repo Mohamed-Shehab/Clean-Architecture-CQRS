@@ -349,6 +349,9 @@ namespace CleanArchitecture.Infrastructure.Identity.Services
 
             var roles = await _userManager.GetRolesAsync(user);
 
+            user.LastLoginAt = DateTime.UtcNow;
+            await _userManager.UpdateAsync(user);
+
             return new AuthenticationResult
             {
                 Succeeded = true,
@@ -360,12 +363,36 @@ namespace CleanArchitecture.Infrastructure.Identity.Services
                     LastName = user.LastName,
                     Email = user.Email!,
                     Roles = roles.ToArray(),
-                    Permissions = Array.Empty<string>() // Permissions are not implemented yet
+                    Permissions = Array.Empty<string>() //todo: Permissions are not implemented yet
                 },
 
                 FailureReason = AuthenticationFailureReason.None
             };
         }
 
+
+        public async Task<AuthenticatedUser?> GetUserByIdAsync(int userId, 
+                                                               CancellationToken cancellationToken = default)
+        {
+            var user = await _userManager.Users
+                .FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
+
+            if (user is null)
+            {
+                return null;
+            }
+
+            var roles = await _userManager.GetRolesAsync(user);
+
+            return new AuthenticatedUser
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email!,
+                Roles = roles.ToArray(),
+                Permissions = Array.Empty<string>() //todo: Permissions are not implemented yet
+            };
+        }
     }
 }

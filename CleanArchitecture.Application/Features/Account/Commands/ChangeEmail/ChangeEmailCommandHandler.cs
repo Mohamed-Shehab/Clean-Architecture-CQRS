@@ -58,7 +58,7 @@ namespace CleanArchitecture.Application.Features.Account.Commands.ChangeEmail
 
             if (!changeEmailResult.Succeeded)
             {
-                return HandleChangeEmailFailure(changeEmailResult.FailureReason);
+                return HandleChangeEmailFailure(changeEmailResult.FailureReason, changeEmailResult.Errors);
             } 
 
 

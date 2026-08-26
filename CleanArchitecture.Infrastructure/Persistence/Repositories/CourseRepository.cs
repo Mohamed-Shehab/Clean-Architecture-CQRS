@@ -8,7 +8,6 @@ using CleanArchitecture.Application.Features.Courses.Queries.Get.Public.Modles;
 using CleanArchitecture.Application.Features.Courses.Queries.GetById.Management;
 using CleanArchitecture.Application.Features.Courses.Queries.GetById.Public;
 using CleanArchitecture.Domain.Entities;
-using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 

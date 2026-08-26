@@ -18,5 +18,7 @@
         public const string NameAr = "NameAr";
         public const string Description = "Description";
         public const string Capacity = "Capacity";
+
+        public const string RefreshToken = "RefreshToken";
     }
 }

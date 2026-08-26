@@ -17,6 +17,7 @@
         public const string NoCoursesForStudent = "NoCoursesForStudent";
 
         public const string LoginSuccessfully = "LoginSuccessfully";
+        public const string TokenRefreshedSuccessfully = "TokenRefreshedSuccessfully";
 
         public const string PasswordChangedSuccessfully = "PasswordChangedSuccessfully";
         public const string PasswordChangeFailed = "PasswordChangeFailed";

@@ -54,5 +54,9 @@ namespace CleanArchitecture.Application.Common.Services.Identity
             string password,
             CancellationToken cancellationToken = default);
 
+
+        Task<AuthenticatedUser?> GetUserByIdAsync(
+            int userId,
+            CancellationToken cancellationToken = default);
     }
 }
