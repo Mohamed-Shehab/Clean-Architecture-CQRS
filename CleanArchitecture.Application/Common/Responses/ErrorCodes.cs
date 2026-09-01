@@ -65,6 +65,8 @@
             public const string RefreshTokenRevoked = "AUTH_REFRESH_TOKEN_REVOKED";
 
             public const string RefreshTokenExpired = "AUTH_REFRESH_TOKEN_EXPIRED";
+
+            public const string SessionNoLongerValid = "AUTH_SESSION_NO_LONGER_VALID";
         }
 
 

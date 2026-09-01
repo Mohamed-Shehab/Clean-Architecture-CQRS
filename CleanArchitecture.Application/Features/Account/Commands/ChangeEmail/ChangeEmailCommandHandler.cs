@@ -71,8 +71,9 @@ namespace CleanArchitecture.Application.Features.Account.Commands.ChangeEmail
         {
             return failureReason switch
             {
-                ChangeEmailFailureReason.UserNotFound => ResponseHandler.NotFound<object>(
-                    _localizer[Messages.NotFound, _localizer[Entities.User]]),
+                ChangeEmailFailureReason.UserNotFound => ResponseHandler.Unauthorized<object>(
+                    _localizer[Errors.SessionNoLongerValid],
+                    errorCode: ErrorCodes.Authentication.SessionNoLongerValid),
 
 
                 ChangeEmailFailureReason.AccountLocked => ResponseHandler.BadRequest<object>(

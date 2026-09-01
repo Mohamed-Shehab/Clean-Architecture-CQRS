@@ -18,6 +18,9 @@
 
         public const string LoginSuccessfully = "LoginSuccessfully";
         public const string TokenRefreshedSuccessfully = "TokenRefreshedSuccessfully";
+        public const string LogoutSuccessfully = "LogoutSuccessfully";
+
+        public const string UserSessionsRetrievedSuccessfully = "UserSessionsRetrievedSuccessfully";
 
         public const string PasswordChangedSuccessfully = "PasswordChangedSuccessfully";
         public const string PasswordChangeFailed = "PasswordChangeFailed";

@@ -43,6 +43,9 @@ namespace CleanArchitecture.WebApi.Controllers
         /// <response code="400">
         /// The current password is incorrect or the password change failed.
         /// </response>
+        /// <response code="401">
+        /// The user is not authenticated.
+        /// </response>
 
         [HttpPut("password")]
         [ProducesResponseType<Response<object>>(StatusCodes.Status200OK)]
@@ -90,9 +93,6 @@ namespace CleanArchitecture.WebApi.Controllers
         /// <response code="401">
         /// The user is not authenticated.
         /// </response>
-        /// <response code="404">
-        /// The authenticated user was not found.
-        /// </response>
         /// <response code="409">
         /// The new email address is already in use.
         /// </response>
@@ -101,7 +101,6 @@ namespace CleanArchitecture.WebApi.Controllers
         [ProducesResponseType<Response<object>>(StatusCodes.Status200OK)]
         [ProducesResponseType<Response<object>>(StatusCodes.Status400BadRequest)]
         [ProducesResponseType<Response<object>>(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType<Response<object>>(StatusCodes.Status404NotFound)]
         [ProducesResponseType<Response<object>>(StatusCodes.Status409Conflict)]
 
         public async Task<IActionResult> ChangeEmail(ChangeEmailCommand command,

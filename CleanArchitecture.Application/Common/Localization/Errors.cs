@@ -24,5 +24,6 @@
         public const string InvalidRefreshToken = "InvalidRefreshToken";
         public const string RefreshTokenRevoked = "RefreshTokenRevoked";
         public const string RefreshTokenExpired = "RefreshTokenExpired";
+        public const string SessionNoLongerValid = "SessionNoLongerValid";
     }
 }

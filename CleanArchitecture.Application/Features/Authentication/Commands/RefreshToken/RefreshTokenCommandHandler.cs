@@ -94,7 +94,7 @@ namespace CleanArchitecture.Application.Features.Authentication.Commands.Refresh
 
             userSession.RefreshTokenExpiresAt = newRefreshTokenResult.ExpiresAt;
 
-            userSession.LastUsedAt = DateTime.UtcNow;
+            userSession.LastUsedAt = DateTimeOffset.UtcNow;
 
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
