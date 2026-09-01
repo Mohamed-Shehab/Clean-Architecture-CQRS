@@ -333,4 +333,13 @@
   <data name="TokenRefreshedSuccessfully" xml:space="preserve">
     <value>تم تحديث رموز المصادقة بنجاح</value>
   </data>
+  <data name="UserSessionsRetrievedSuccessfully" xml:space="preserve">
+    <value>تم استرجاع جلسات المستخدم بنجاح</value>
+  </data>
+  <data name="SessionNoLongerValid" xml:space="preserve">
+    <value>لم تعد الجلسة صالحة</value>
+  </data>
+  <data name="LogoutSuccessfully" xml:space="preserve">
+    <value>تم تسجيل الخروج بنجاح</value>
+  </data>
 </root>

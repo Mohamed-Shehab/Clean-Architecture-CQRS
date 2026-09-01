@@ -6,6 +6,7 @@ using CleanArchitecture.Application.Common.Responses;
 using CleanArchitecture.Application.Common.Services.Authentication;
 using CleanArchitecture.Application.Common.Services.Authentication.Enums;
 using CleanArchitecture.Application.Common.Services.ClientInfo;
+using CleanArchitecture.Application.Common.Services.GeoLocation;
 using CleanArchitecture.Application.Common.Services.Identity;
 using CleanArchitecture.Application.Features.Authentication.Models;
 using CleanArchitecture.Domain.Entities;
@@ -20,6 +21,8 @@ namespace CleanArchitecture.Application.Features.Authentication.Commands.Login
         private readonly IJwtTokenService _jwtTokenService;
         private readonly IRefreshTokenService _refreshTokenService;
         private readonly IClientInfoProvider _clientInfoProvider;
+        private readonly IUserAgentParser _userAgentParser;
+        private readonly IGeoLocationProvider _geoLocationProvider;
         private readonly IUserSessionRepository _userSessionRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IStringLocalizer<SharedResources> _localizer;
@@ -29,6 +32,8 @@ namespace CleanArchitecture.Application.Features.Authentication.Commands.Login
                                    IJwtTokenService jwtTokenService,
                                    IRefreshTokenService refreshTokenService,
                                    IClientInfoProvider clientInfoProvider,
+                                   IUserAgentParser userAgentParser,
+                                   IGeoLocationProvider geoLocationProvider,
                                    IUserSessionRepository userSessionRepository,
                                    IUnitOfWork unitOfWork,
                                    IStringLocalizer<SharedResources> localizer)
@@ -37,6 +42,8 @@ namespace CleanArchitecture.Application.Features.Authentication.Commands.Login
             this._jwtTokenService = jwtTokenService;
             this._refreshTokenService = refreshTokenService;
             this._clientInfoProvider = clientInfoProvider;
+            this._userAgentParser = userAgentParser;
+            this._geoLocationProvider = geoLocationProvider;
             this._userSessionRepository = userSessionRepository;
             this._unitOfWork = unitOfWork;
             this._localizer = localizer;
@@ -56,26 +63,57 @@ namespace CleanArchitecture.Application.Features.Authentication.Commands.Login
             }
 
 
+            var authenticatedUser = authenticationResult.User!;
+
+
             // Generate access token
-            var accessTokenResult = _jwtTokenService.GenerateAccessToken(authenticationResult.User!);
+            var accessTokenResult = _jwtTokenService.GenerateAccessToken(authenticatedUser);
+
 
             // Generate refresh token
             var refreshTokenResult = _refreshTokenService.GenerateRefreshToken();
 
-            // Create a new user session for the authenticated device
+
+            #region Create a new user session for the authenticated device
+
+            // Parse client device information
+            var userAgent = _clientInfoProvider.UserAgent;
+
+            var clientDeviceInfo = _userAgentParser.Parse(userAgent);
+
+
+            // Resolve client location
+            var ipAddress = _clientInfoProvider.IpAddress;
+
+            var clientLocationInfo = _geoLocationProvider.GetLocation(ipAddress);
+
 
             var userSession = new UserSession
             {
                 UserSessionId = Guid.CreateVersion7(),
-                UserId = authenticationResult.User!.Id,
+                UserId = authenticatedUser.Id,
+
                 RefreshTokenHash = _refreshTokenService.HashToken(refreshTokenResult.RefreshToken),
                 RefreshTokenExpiresAt = refreshTokenResult.ExpiresAt,
-                CreatedAt = DateTime.UtcNow,
-                IpAddress = _clientInfoProvider.IpAddress,
-                UserAgent = _clientInfoProvider.UserAgent
+                CreatedAt = DateTimeOffset.UtcNow,
+                LastUsedAt = DateTimeOffset.UtcNow,
+
+                // Client device information
+                UserAgent = userAgent,
+                DeviceType = clientDeviceInfo.DeviceType,
+                OperatingSystem = clientDeviceInfo.OperatingSystem,
+                Browser = clientDeviceInfo.Browser,
+
+                // Client location information
+                IpAddress = ipAddress,
+                Country = clientLocationInfo.Country,
+                Region = clientLocationInfo.Region,
+                City = clientLocationInfo.City
             };
 
             await _userSessionRepository.AddAsync(userSession, cancellationToken);
+
+            #endregion
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 

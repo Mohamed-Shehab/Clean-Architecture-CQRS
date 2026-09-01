@@ -1,6 +1,7 @@
 ﻿using CleanArchitecture.Infrastructure.Authentication;
 using CleanArchitecture.Infrastructure.ClientInfo;
 using CleanArchitecture.Infrastructure.CurrentUser;
+using CleanArchitecture.Infrastructure.GeoLocation;
 using CleanArchitecture.Infrastructure.Identity;
 using CleanArchitecture.Infrastructure.Localization;
 using CleanArchitecture.Infrastructure.Persistence;
@@ -18,7 +19,8 @@ namespace CleanArchitecture.Infrastructure
                 .AddPersistenceServices(configuration)
                 .AddIdentityServices()
                 .AddCurrentUserServices()
-                .AddClientInfoProviderServices()
+                .AddClientInfoServices()
+                .AddGeoLocationServices()
                 .AddLocalizationServices()
                 .AddAuthenticationServices(configuration);
 

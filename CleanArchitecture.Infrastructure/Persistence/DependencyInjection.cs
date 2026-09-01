@@ -26,6 +26,7 @@ namespace CleanArchitecture.Infrastructure.Persistence
             services.AddScoped<IStudentRepository, StudentRepository>();
             services.AddScoped<ICourseRepository, CourseRepository>();
             services.AddScoped<IEnrollmentRepository, EnrollmentRepository>();
+            services.AddScoped<IUserSessionRepository, UserSessionRepository>();
 
 
             // Registration of Unit Of Work

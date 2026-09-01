@@ -333,4 +333,13 @@
   <data name="TokenRefreshedSuccessfully" xml:space="preserve">
     <value>Authentication tokens refreshed successfully</value>
   </data>
+  <data name="UserSessionsRetrievedSuccessfully" xml:space="preserve">
+    <value>User sessions retrieved successfully</value>
+  </data>
+  <data name="SessionNoLongerValid" xml:space="preserve">
+    <value>The session is no longer valid</value>
+  </data>
+  <data name="LogoutSuccessfully" xml:space="preserve">
+    <value>Logged out successfully</value>
+  </data>
 </root>
