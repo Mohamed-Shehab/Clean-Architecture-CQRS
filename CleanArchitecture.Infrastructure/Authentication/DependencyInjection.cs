@@ -2,6 +2,7 @@
 using CleanArchitecture.Infrastructure.Authentication.Configurations;
 using CleanArchitecture.Infrastructure.Authentication.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -61,6 +62,25 @@ namespace CleanArchitecture.Infrastructure.Authentication
 
                         ClockSkew = TimeSpan.Zero
                     };
+                });
+
+
+            // Register Authorization Policies
+            services
+                .AddAuthorization(options =>
+                {
+                    // Configure Default Policy
+                    options.DefaultPolicy = new AuthorizationPolicyBuilder()
+                        .RequireAuthenticatedUser()
+                        .RequireClaim("purpose", "access")
+                        .Build();
+
+                    // Configure Two-Factor Authentication Policy
+                    options.AddPolicy("TwoFactorPreAuth", policy =>
+                    {
+                        policy.RequireAuthenticatedUser();
+                        policy.RequireClaim("purpose", "2fa");
+                    });
                 });
 
 

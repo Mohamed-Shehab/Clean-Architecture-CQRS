@@ -342,4 +342,31 @@
   <data name="LogoutSuccessfully" xml:space="preserve">
     <value>Logged out successfully</value>
   </data>
+  <data name="TwoFactorAuthenticationRequired" xml:space="preserve">
+    <value>Two-factor authentication is required to complete the login</value>
+  </data>
+  <data name="TwoFactorAuthenticationSetupInitiated" xml:space="preserve">
+    <value>Two-factor authentication setup initiated successfully</value>
+  </data>
+  <data name="VerificationCode" xml:space="preserve">
+    <value>Verification Code</value>
+  </data>
+  <data name="ExactLength" xml:space="preserve">
+    <value>{0} must be exactly {1} characters long</value>
+  </data>
+  <data name="DigitsOnly" xml:space="preserve">
+    <value>{0} must contain digits only</value>
+  </data>
+  <data name="InvalidTwoFactorAuthenticationCode" xml:space="preserve">
+    <value>The two-factor authentication code is invalid</value>
+  </data>
+  <data name="TwoFactorAuthenticationEnabled" xml:space="preserve">
+    <value>Two-factor authentication has been enabled successfully</value>
+  </data>
+  <data name="TwoFactorRecoveryCodesRegeneratedSuccessfully" xml:space="preserve">
+    <value>New two-factor recovery codes have been generated successfully</value>
+  </data>
+  <data name="TwoFactorAuthenticationDisabledSuccessfully" xml:space="preserve">
+    <value>Two-factor authentication has been disabled successfully</value>
+  </data>
 </root>

@@ -342,4 +342,31 @@
   <data name="LogoutSuccessfully" xml:space="preserve">
     <value>تم تسجيل الخروج بنجاح</value>
   </data>
+  <data name="TwoFactorAuthenticationRequired" xml:space="preserve">
+    <value>المصادقة الثنائية مطلوبة لإكمال تسجيل الدخول</value>
+  </data>
+  <data name="TwoFactorAuthenticationSetupInitiated" xml:space="preserve">
+    <value>تم بدء إعداد المصادقة الثنائية بنجاح</value>
+  </data>
+  <data name="VerificationCode" xml:space="preserve">
+    <value>رمز التحقق</value>
+  </data>
+  <data name="ExactLength" xml:space="preserve">
+    <value>يجب أن يكون طول {0} بالضبط {1} أحرف</value>
+  </data>
+  <data name="DigitsOnly" xml:space="preserve">
+    <value>يجب أن يحتوي {0} على أرقام فقط</value>
+  </data>
+  <data name="InvalidTwoFactorAuthenticationCode" xml:space="preserve">
+    <value>رمز المصادقة الثنائية غير صحيح</value>
+  </data>
+  <data name="TwoFactorAuthenticationEnabled" xml:space="preserve">
+    <value>تم تفعيل المصادقة الثنائية بنجاح</value>
+  </data>
+  <data name="TwoFactorRecoveryCodesRegeneratedSuccessfully" xml:space="preserve">
+    <value>تم إنشاء رموز الاسترداد الجديدة للمصادقة الثنائية بنجاح</value>
+  </data>
+  <data name="TwoFactorAuthenticationDisabledSuccessfully" xml:space="preserve">
+    <value>تم تعطيل المصادقة الثنائية بنجاح</value>
+  </data>
 </root>

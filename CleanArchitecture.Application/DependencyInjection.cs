@@ -1,4 +1,5 @@
 ﻿using CleanArchitecture.Application.Behaviors;
+using CleanArchitecture.Application.Common.Services.Authentication;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,6 +27,9 @@ namespace CleanArchitecture.Application
                 typeof(IPipelineBehavior<,>),
                 typeof(ValidationBehavior<,>)
             );
+
+            // Registration of Authentication Completion flow
+            services.AddScoped<IAuthenticationCompletionService, AuthenticationCompletionService>();
 
             return services;
         }

@@ -28,7 +28,8 @@ namespace CleanArchitecture.Infrastructure.Authentication.Services
                 new(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new(ClaimTypes.Email, user.Email),
                 new(ClaimTypes.GivenName, user.FirstName),
-                new(ClaimTypes.Surname, user.LastName)
+                new(ClaimTypes.Surname, user.LastName),
+                new ("purpose", "access")
             };
 
             
@@ -75,6 +76,43 @@ namespace CleanArchitecture.Infrastructure.Authentication.Services
                 AccessToken = accessToken,
                 ExpiresAt = expires
             };
+        }
+
+
+        public string GeneratePurposeToken(string userId,
+                                           string purpose,
+                                           TimeSpan lifetime)
+        {
+            var claims = new List<Claim>
+            {
+                new(ClaimTypes.NameIdentifier, userId),
+                new("purpose", purpose)
+            };
+
+            var key = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(_jwtOptions.SecretKey));
+
+            var credentials = new SigningCredentials(
+                key,
+                SecurityAlgorithms.HmacSha256);
+
+            var expires = DateTime.UtcNow.Add(lifetime);
+
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = expires,
+                SigningCredentials = credentials,
+                Issuer = _jwtOptions.Issuer,
+                Audience = _jwtOptions.Audience
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+
+            return tokenHandler.WriteToken(token);
         }
     }
 }
