@@ -17,6 +17,11 @@
         public const string NoCoursesForStudent = "NoCoursesForStudent";
 
         public const string LoginSuccessfully = "LoginSuccessfully";
+        public const string TwoFactorAuthenticationRequired = "TwoFactorAuthenticationRequired";
+        public const string TwoFactorAuthenticationSetupInitiated = "TwoFactorAuthenticationSetupInitiated";
+        public const string TwoFactorAuthenticationEnabled = "TwoFactorAuthenticationEnabled";
+        public const string TwoFactorRecoveryCodesRegeneratedSuccessfully = "TwoFactorRecoveryCodesRegeneratedSuccessfully";
+        public const string TwoFactorAuthenticationDisabledSuccessfully = "TwoFactorAuthenticationDisabledSuccessfully";
         public const string TokenRefreshedSuccessfully = "TokenRefreshedSuccessfully";
         public const string LogoutSuccessfully = "LogoutSuccessfully";
 

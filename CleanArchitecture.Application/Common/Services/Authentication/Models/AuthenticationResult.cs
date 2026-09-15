@@ -6,6 +6,12 @@ namespace CleanArchitecture.Application.Common.Services.Authentication.Models
     {
         public bool Succeeded { get; init; }
 
+        public bool RequiresTwoFactor { get; init; }
+
+        public DateTimeOffset? LockedUntil { get; init; }
+
+        public int? RemainingAttempts { get; init; }
+
         public AuthenticatedUser? User { get; init; }
 
         public AuthenticationFailureReason FailureReason { get; init; }

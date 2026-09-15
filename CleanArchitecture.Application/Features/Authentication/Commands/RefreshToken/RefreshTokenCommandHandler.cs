@@ -11,7 +11,7 @@ using Microsoft.Extensions.Localization;
 
 namespace CleanArchitecture.Application.Features.Authentication.Commands.RefreshToken
 {
-    public sealed class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, Response<AuthenticationResponse>>
+    public sealed class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, Response<TokenResponse>>
     {
         private readonly IRefreshTokenService _refreshTokenService;
         private readonly IUserSessionRepository _userSessionRepository;
@@ -36,7 +36,7 @@ namespace CleanArchitecture.Application.Features.Authentication.Commands.Refresh
         }
 
 
-        public async Task<Response<AuthenticationResponse>> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
+        public async Task<Response<TokenResponse>> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
         {
             // Hash the raw refresh token received from the client
             var refreshTokenHash = _refreshTokenService.HashToken(request.RefreshToken);
@@ -47,7 +47,7 @@ namespace CleanArchitecture.Application.Features.Authentication.Commands.Refresh
 
             if (userSession is null)
             {
-                return ResponseHandler.Unauthorized<AuthenticationResponse>(
+                return ResponseHandler.Unauthorized<TokenResponse>(
                     _localizer[Errors.InvalidRefreshToken],
                     errorCode: ErrorCodes.Authentication.InvalidRefreshToken);
             }
@@ -56,7 +56,7 @@ namespace CleanArchitecture.Application.Features.Authentication.Commands.Refresh
             // Make sure the session has not been revoked
             if (userSession.IsRevoked)
             {
-                return ResponseHandler.Unauthorized<AuthenticationResponse>(
+                return ResponseHandler.Unauthorized<TokenResponse>(
                     _localizer[Errors.RefreshTokenRevoked],
                     errorCode: ErrorCodes.Authentication.RefreshTokenRevoked);
             }
@@ -65,18 +65,18 @@ namespace CleanArchitecture.Application.Features.Authentication.Commands.Refresh
             // Make sure the refresh token has not expired
             if (userSession.IsExpired)
             {
-                return ResponseHandler.Unauthorized<AuthenticationResponse>(
+                return ResponseHandler.Unauthorized<TokenResponse>(
                     _localizer[Errors.RefreshTokenExpired],
                     errorCode: ErrorCodes.Authentication.RefreshTokenExpired);
             }
 
 
             // Retrieve the user associated with this session
-            var user = await _identityService.GetUserByIdAsync(userSession.UserId, cancellationToken);
+            var user = await _identityService.GetAuthenticatedUserAsync(userSession.UserId.ToString());
 
             if (user is null)
             {
-                return ResponseHandler.Unauthorized<AuthenticationResponse>(
+                return ResponseHandler.Unauthorized<TokenResponse>(
                     _localizer[Errors.InvalidRefreshToken],
                     errorCode: ErrorCodes.Authentication.InvalidRefreshToken);
             }
@@ -100,7 +100,7 @@ namespace CleanArchitecture.Application.Features.Authentication.Commands.Refresh
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
 
-            var authenticationResponse = new AuthenticationResponse
+            var tokenResponse = new TokenResponse
             {
                 AccessToken = accessTokenResult.AccessToken,
                 TokenType = "Bearer",
@@ -112,7 +112,7 @@ namespace CleanArchitecture.Application.Features.Authentication.Commands.Refresh
 
 
             return ResponseHandler.Success(
-                authenticationResponse,
+                tokenResponse,
                 _localizer[Messages.TokenRefreshedSuccessfully]);
         }
     }

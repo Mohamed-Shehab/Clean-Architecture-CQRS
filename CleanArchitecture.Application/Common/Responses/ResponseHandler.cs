@@ -94,14 +94,31 @@ namespace CleanArchitecture.Application.Common.Responses
         }
 
         public static Response<T> Unauthorized<T>(string message = "Unauthorized",
-                                                  string? errorCode = null)
+                                                  string? errorCode = null,
+                                                  object? meta = null)
         {
             return new Response<T>
             {
                 Succeeded = false,
                 StatusCode = StatusCodes.Status401Unauthorized,
                 Message = message,
-                ErrorCode = errorCode
+                ErrorCode = errorCode,
+                Meta = meta
+            };
+        }
+
+
+        public static Response<T> Locked<T>(string message = "Locked",
+                                            string? errorCode = null,
+                                            object? meta = null)
+        {
+            return new Response<T>
+            {
+                Succeeded = false,
+                StatusCode = StatusCodes.Status423Locked,
+                Message = message,
+                ErrorCode = errorCode,
+                Meta = meta
             };
         }
 

@@ -67,6 +67,8 @@
             public const string RefreshTokenExpired = "AUTH_REFRESH_TOKEN_EXPIRED";
 
             public const string SessionNoLongerValid = "AUTH_SESSION_NO_LONGER_VALID";
+
+            public const string InvalidTwoFactorCode = "InvalidTwoFactorCode";
         }
 
 

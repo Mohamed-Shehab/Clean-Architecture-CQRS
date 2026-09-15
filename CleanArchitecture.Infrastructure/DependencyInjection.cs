@@ -5,6 +5,7 @@ using CleanArchitecture.Infrastructure.GeoLocation;
 using CleanArchitecture.Infrastructure.Identity;
 using CleanArchitecture.Infrastructure.Localization;
 using CleanArchitecture.Infrastructure.Persistence;
+using CleanArchitecture.Infrastructure.QrCode;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -22,7 +23,8 @@ namespace CleanArchitecture.Infrastructure
                 .AddClientInfoServices()
                 .AddGeoLocationServices()
                 .AddLocalizationServices()
-                .AddAuthenticationServices(configuration);
+                .AddAuthenticationServices(configuration)
+                .AddQrCodeServices();
 
 
             return services;

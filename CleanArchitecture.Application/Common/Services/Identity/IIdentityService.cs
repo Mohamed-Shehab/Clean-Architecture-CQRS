@@ -1,5 +1,6 @@
 ﻿using CleanArchitecture.Application.Common.Services.Authentication.Models;
 using CleanArchitecture.Application.Common.Services.Identity.Models;
+using System;
 
 namespace CleanArchitecture.Application.Common.Services.Identity
 {
@@ -55,8 +56,40 @@ namespace CleanArchitecture.Application.Common.Services.Identity
             CancellationToken cancellationToken = default);
 
 
-        Task<AuthenticatedUser?> GetUserByIdAsync(
-            int userId,
-            CancellationToken cancellationToken = default);
+        Task<AuthenticatedUser?> CompleteLoginAsync(
+            string userId);
+
+
+        Task<AuthenticatedUser?> GetAuthenticatedUserAsync(
+            string userId);
+
+
+        Task<string?> GenerateAuthenticatorKeyAsync(
+            string userId);
+
+
+        Task<TwoFactorVerificationResult> VerifyTwoFactorCodeAsync(
+            string userId,
+            string code);
+
+
+        Task<bool> DisableTwoFactorAuthenticationAsync(
+            string userId);
+
+
+        Task<IReadOnlyCollection<string>?> GenerateTwoFactorRecoveryCodesAsync(
+            string userId,
+            int numberOfCodes);
+
+
+        Task<TwoFactorConfirmationResult> ConfirmTwoFactorAsync(
+            string userId,
+            string code,
+            int numberOfRecoveryCodes);
+
+
+        Task<bool> RedeemTwoFactorRecoveryCodeAsync(
+            string userId,
+            string recoveryCode);
     }
 }

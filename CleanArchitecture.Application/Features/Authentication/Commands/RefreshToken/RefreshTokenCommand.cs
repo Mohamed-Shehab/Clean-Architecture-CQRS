@@ -4,5 +4,5 @@ using MediatR;
 
 namespace CleanArchitecture.Application.Features.Authentication.Commands.RefreshToken
 {
-    public sealed record RefreshTokenCommand(string RefreshToken) : IRequest<Response<AuthenticationResponse>>;
+    public sealed record RefreshTokenCommand(string RefreshToken) : IRequest<Response<TokenResponse>>;
 }

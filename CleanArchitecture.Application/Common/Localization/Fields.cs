@@ -20,5 +20,7 @@
         public const string Capacity = "Capacity";
 
         public const string RefreshToken = "RefreshToken";
+
+        public const string VerificationCode = "VerificationCode";
     }
 }

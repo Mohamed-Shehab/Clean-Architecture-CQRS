@@ -1,6 +1,6 @@
 ﻿namespace CleanArchitecture.Application.Features.Authentication.Models
 {
-    public sealed class AuthenticationResponse
+    public sealed class TokenResponse
     {
         public string AccessToken { get; init; } = default!;
 
