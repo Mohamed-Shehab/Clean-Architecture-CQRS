@@ -7,6 +7,7 @@ using CleanArchitecture.Application.Features.Authentication.Commands.LogoutSessi
 using CleanArchitecture.Application.Features.Authentication.Commands.RefreshToken;
 using CleanArchitecture.Application.Features.Authentication.Commands.Register;
 using CleanArchitecture.Application.Features.Authentication.Commands.ValidateTwoFactor;
+using CleanArchitecture.Application.Features.Authentication.Commands.ValidateTwoFactorRecoveryCode;
 using CleanArchitecture.Application.Features.Authentication.Models;
 using CleanArchitecture.Application.Features.Authentication.Queries.GetUserSessions;
 using CleanArchitecture.WebApi.Controllers.Base;
@@ -188,6 +189,75 @@ namespace CleanArchitecture.WebApi.Controllers
 
         public async Task<IActionResult> ValidateTwoFactor(ValidateTwoFactorCommand request,
                                                            CancellationToken cancellationToken)
+        {
+            var response = await _mediator.Send(request, cancellationToken);
+
+
+            return HandleResponse(response);
+        }
+        #endregion
+
+
+        #region Validate Two-Factor Recovery Code
+        /// <summary>
+        /// Validates a two-factor authentication recovery code for the currently
+        /// authenticating user and completes the authentication process.
+        /// </summary>
+        ///
+        /// <remarks>
+        /// This endpoint is used as an alternative to authenticator-app verification
+        /// when the user cannot provide a valid TOTP code.
+        ///
+        /// The authentication flow is:
+        /// - The user first authenticates using their email and password.
+        /// - If two-factor authentication is enabled, the login endpoint returns a
+        ///   short-lived pre-authentication token.
+        /// - The client sends that token as a Bearer token when calling this endpoint.
+        /// - The user provides one of their two-factor authentication recovery codes.
+        /// - If the recovery code is valid, the authentication process is completed.
+        /// - Access and refresh tokens are generated.
+        /// - A new user session is created.
+        ///
+        /// **Important:**
+        /// - This endpoint requires a valid two-factor pre-authentication token.
+        /// - The pre-authentication token does not grant normal application access.
+        /// - The recovery code can be used as an alternative to the authenticator
+        ///   application TOTP code.
+        /// - A recovery code is single-use and is consumed after successful validation.
+        /// - Previously redeemed recovery codes cannot be used again.
+        /// - Access and refresh tokens are issued only after successful recovery-code
+        ///   validation.
+        /// </remarks>
+        ///
+        /// <returns>
+        /// Returns access and refresh tokens after successful two-factor recovery-code
+        /// verification.
+        /// </returns>
+        ///
+        /// <response code="200">
+        /// The two-factor recovery code was successfully verified and the user was
+        /// authenticated.
+        /// </response>
+        /// <response code="400">
+        /// The provided recovery code does not satisfy the required validation rules.
+        /// </response>
+        /// <response code="401">
+        /// The provided recovery code is invalid, has already been used, or the
+        /// authentication pre-authentication token is invalid or missing.
+        /// </response>
+        /// <response code="404">
+        /// The authenticated user's account could not be found.
+        /// </response>
+
+        [HttpPost("2fa/validate-recovery-code")]
+        [Authorize(Policy = "TwoFactorPreAuth")]
+        [ProducesResponseType<Response<TokenResponse>>(StatusCodes.Status200OK)]
+        [ProducesResponseType<Response<object>>(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType<Response<object>>(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType<Response<object>>(StatusCodes.Status404NotFound)]
+
+        public async Task<IActionResult> ValidateTwoFactorRecoveryCode(ValidateTwoFactorRecoveryCodeCommand request,
+                                                                       CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(request, cancellationToken);
 

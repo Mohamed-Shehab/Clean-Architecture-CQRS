@@ -17,7 +17,7 @@ namespace CleanArchitecture.Application.Features.Account.Commands.ConfirmTwoFact
 
             RuleFor(x => x.Code)
                 .NotEmpty()
-                .WithMessage(_localizer[ValidationErrors.Required, Fields.VerificationCode]);
+                .WithMessage(_localizer[ValidationErrors.Required, _localizer[Fields.VerificationCode]]);
 
             RuleFor(x => x.Code)
                 .Length(6)

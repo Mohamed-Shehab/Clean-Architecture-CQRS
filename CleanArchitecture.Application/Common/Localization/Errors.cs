@@ -8,6 +8,7 @@
         public const string AccountLocked = "AccountLocked";
         public const string InvalidPassword = "InvalidPassword";
         public const string InvalidTwoFactorAuthenticationCode = "InvalidTwoFactorAuthenticationCode";
+        public const string InvalidTwoFactorAuthenticationRecoveryCode = "InvalidTwoFactorAuthenticationRecoveryCode";
 
         public const string AlreadyEnrolled = "AlreadyEnrolled";
         public const string AlreadyCompleted = "AlreadyCompleted";

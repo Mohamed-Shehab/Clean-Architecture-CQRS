@@ -369,4 +369,10 @@
   <data name="TwoFactorAuthenticationDisabledSuccessfully" xml:space="preserve">
     <value>Two-factor authentication has been disabled successfully</value>
   </data>
+  <data name="InvalidTwoFactorAuthenticationRecoveryCode" xml:space="preserve">
+    <value>The two-factor recovery code is invalid or has already been used</value>
+  </data>
+  <data name="RecoveryCode" xml:space="preserve">
+    <value>Recovery code</value>
+  </data>
 </root>

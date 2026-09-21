@@ -27,7 +27,9 @@ namespace CleanArchitecture.Infrastructure.Persistence.Repositories
                                                                                CancellationToken cancellationToken = default)
         {
             return await _context.UserSessions
-                .Where(us => us.UserId == userId && !us.IsExpired && !us.IsRevoked)
+                .Where(us => us.UserId == userId 
+                    && us.RefreshTokenExpiresAt > DateTimeOffset.UtcNow
+                    && us.RevokedAt == null)
                 .OrderByDescending(us => us.LastUsedAt)
                 .Select(us => new UserSessionDto
                 {
@@ -57,7 +59,9 @@ namespace CleanArchitecture.Infrastructure.Persistence.Repositories
                                                                                     CancellationToken cancellationToken = default)
         {
             return await _context.UserSessions
-                .Where(us => us.UserId == userId && !us.IsExpired && !us.IsRevoked)
+                .Where(us => us.UserId == userId 
+                    && us.RefreshTokenExpiresAt > DateTimeOffset.UtcNow
+                    && us.RevokedAt == null)
                 .ToListAsync(cancellationToken);
         }
     }

@@ -68,7 +68,9 @@
 
             public const string SessionNoLongerValid = "AUTH_SESSION_NO_LONGER_VALID";
 
-            public const string InvalidTwoFactorCode = "InvalidTwoFactorCode";
+            public const string InvalidTwoFactorCode = "AUTH_INVALID_TWO_FACTOR_CODE";
+
+            public const string InvalidTwoFactorRecoveryCode = "AUTH_INVALID_TWO_FACTOR_RECOVERY_CODE";
         }
 
 
