@@ -22,5 +22,6 @@
         public const string RefreshToken = "RefreshToken";
 
         public const string VerificationCode = "VerificationCode";
+        public const string RecoveryCode = "RecoveryCode";
     }
 }

@@ -369,4 +369,10 @@
   <data name="TwoFactorAuthenticationDisabledSuccessfully" xml:space="preserve">
     <value>تم تعطيل المصادقة الثنائية بنجاح</value>
   </data>
+  <data name="InvalidTwoFactorAuthenticationRecoveryCode" xml:space="preserve">
+    <value>رمز استرداد المصادقة الثنائية غير صالح أو تم استخدامه من قبل</value>
+  </data>
+  <data name="RecoveryCode" xml:space="preserve">
+    <value>رمز الاسترداد</value>
+  </data>
 </root>

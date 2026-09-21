@@ -34,7 +34,7 @@ namespace CleanArchitecture.Infrastructure.Persistence.Configurations
                    .IsRequired();
 
             builder.Property(x => x.LastUsedAt)
-                   .IsRequired(false);
+                   .IsRequired(true);
 
             builder.Property(x => x.RevokedAt)
                    .IsRequired(false);

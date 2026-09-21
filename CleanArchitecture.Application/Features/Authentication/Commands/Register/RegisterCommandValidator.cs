@@ -77,6 +77,8 @@ namespace CleanArchitecture.Application.Features.Authentication.Commands.Registe
         {
             RuleFor(x => x.DateOfBirth)
                 .LessThan(DateOnly.FromDateTime(DateTime.UtcNow))
+                .WithMessage(_localizer[ValidationErrors.InvalidValue, _localizer[Fields.DateOfBirth]])
+                .GreaterThan(DateOnly.FromDateTime(DateTime.UtcNow.AddYears(-100)))
                 .WithMessage(_localizer[ValidationErrors.InvalidValue, _localizer[Fields.DateOfBirth]]);
         }
 
